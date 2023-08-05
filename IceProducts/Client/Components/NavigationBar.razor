@@ -28,7 +28,7 @@
                         </li>
                         <li><a href="#">Drop Down 2</a></li>
                         <li><a href="#">Drop Down 3</a></li>
-                        <li><a href="#">Drop Down 4</a></li>
+                        <li><a href="#">Drop Do wn 4</a></li>
                     </ul>
                 </li>
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
@@ -42,14 +42,4 @@
 
 
 @code {
-    [Inject]
-    private IJSRuntime JSRuntime { get; set; }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "template/assets/vendor/purecounter/purecounter_vanilla.js");
-        }
-    }
 }

@@ -1,5 +1,7 @@
 ﻿@using IceProducts.Client.Components
 @inherits LayoutComponentBase
+@inject IJSRuntime _js
+
 
 @*<MudThemeProvider />
 <MudDialogProvider />
@@ -231,9 +233,15 @@
     </main>
 
 
+
 </MudLayout>
 
-
 @code{
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var targetUrl = "/template/assets/js/main.js";
+        await _js.InvokeVoidAsync("loadJs", targetUrl);
 
+    }
 }
