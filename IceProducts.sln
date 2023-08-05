@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IceProducts.Server", "IceProducts\Server\IceProducts.Server.csproj", "{2523E59D-715B-4F2C-90B3-6773FABE1152}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceProducts.Server", "IceProducts\Server\IceProducts.Server.csproj", "{2523E59D-715B-4F2C-90B3-6773FABE1152}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IceProducts.Client", "IceProducts\Client\IceProducts.Client.csproj", "{E887DF0B-BA72-4F51-832E-CA4ED7945E2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceProducts.Client", "IceProducts\Client\IceProducts.Client.csproj", "{E887DF0B-BA72-4F51-832E-CA4ED7945E2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IceProducts.Shared", "IceProducts\Shared\IceProducts.Shared.csproj", "{DF69F962-7F72-4163-BE28-CDC54D0678BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IceProducts.Shared", "IceProducts\Shared\IceProducts.Shared.csproj", "{DF69F962-7F72-4163-BE28-CDC54D0678BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
