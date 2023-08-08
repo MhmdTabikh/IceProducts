@@ -47,32 +47,32 @@
     <script src="/template/assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="/template/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/template/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="/template/assets/vendor/glightbox/js/glightbox.min.js"></script>    
+    <script src="/template/assets/vendor/glightbox/js/glightbox.min.js"></script>
     <script src="/template/assets/js/main.js"></script>
 
-    <script src="_framework/blazor.webassembly.js" ></script>
+    <script src="_framework/blazor.webassembly.js"></script>
 
     <script>
-		function loadJs(sourceUrl) {
-			if (sourceUrl.Length == 0) {
-				console.error("Invalid source URL");
-				return;
-			}
+        function loadJs(sourceUrl) {
+            if (sourceUrl.Length == 0) {
+                console.error("Invalid source URL");
+                return;
+            }
 
-			var tag = document.createElement('script');
-			tag.src = sourceUrl;
-			tag.type = "text/javascript";
+            var tag = document.createElement('script');
+            tag.src = sourceUrl;
+            tag.type = "text/javascript";
 
-			tag.onload = function () {
-				console.log("Script loaded successfully");
-			}
+            tag.onload = function () {
+                console.log("Script loaded successfully");
+            }
 
-			tag.onerror = function () {
-				console.error("Failed to load script");
-			}
+            tag.onerror = function () {
+                console.error("Failed to load script");
+            }
 
-			document.body.appendChild(tag);
-		}
+            document.body.appendChild(tag);
+        }
     </script>
 
 </body>
