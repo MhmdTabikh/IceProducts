@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img">
-                    <img src="template/assets/img/26985452_v869-wan-20-fotor-2023080512150.png" class="img-fluid animated" alt="">
+                    <img src="template/assets/img/hero-img.png" class="img-fluid animated" alt="">
                 </div>
             </div>
         </div>
@@ -34,9 +34,11 @@
 
     <main id="main">
 
+        <Animate Duration="TimeSpan.FromMilliseconds(1500)"  Animation="Animations.FadeUp"></Animate>
+
         <section id="promotion-section">
             <div class="promotion-item">
-                <div class="container" data-aos="fade-up" data-aos-once="true">
+                <div class="container" data-aos-duration="950" data-aos="fade-right">
                     <div class="row">
                         <div class="col-lg-6 pt-5 pt-lg-0  order-lg-2 d-flex flex-column justify-content-center">
                             <h1 class="align-self-baseline display-2 fw-bold"> Safety</h1>
@@ -56,7 +58,7 @@
             </div>
 
             <div class="promotion-item bg-light">
-                <div class="container" data-aos="fade-up" data-aos-once="true">
+                <div class="container" data-aos-duration="750" data-aos="fade-left">
                     <div class="row">
                         <div class="col-lg-6 pt-5 pt-lg-0 order-1 order-lg-1 order-md-1 order-sm-1  d-flex flex-column justify-content-center">
                             <h1 class="align-self-baseline display-2 fw-bold"> Safety</h1>
@@ -76,8 +78,8 @@
             </div>
 
 
-            <div class="promotion-item">
-                <div class="container" data-aos="fade-up" data-aos-once="true">
+            <div class="promotion-item" id="promotion-item-3">
+                <div class="container" data-aos-duration="950" data-aos="fade-right">
                     <div class="row">
                         <div class="col-lg-6 pt-5 pt-lg-0  order-lg-2 d-flex flex-column justify-content-center">
                             <h1 class="align-self-baseline display-2 fw-bold"> Safety</h1>
@@ -98,13 +100,17 @@
 
         </section>
 
-        <div class="container-fluid">
+        <div class="container-fluid" id="products" style="margin-top:-75px;">
 
-            <p style="font-weight: bold;" class="display-4 fw-bold  text-center">
-                Products
-            </p>
+                <h2 class="display-4 fw-bold scs text-center p-2" >
+                    Products
+                </h2>
 
-            <div class="d-flex flex-wrap justify-content-center">
+
+            <div class="d-flex flex-wrap justify-content-center mt-4">
+                <FlippingProductCard></FlippingProductCard>
+                <FlippingProductCard></FlippingProductCard>
+                <FlippingProductCard></FlippingProductCard>
                 <FlippingProductCard></FlippingProductCard>
                 <FlippingProductCard></FlippingProductCard>
                 <FlippingProductCard></FlippingProductCard>
@@ -114,22 +120,58 @@
 
         </div>
 
+         <section id="contact" class="contact">
+             <ContactUsForm></ContactUsForm>
+         </section>
+
 
         @Body
     </main>
 
 
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+
+        <div class="footer-top">
+
+            <div class="container">
+
+                <div class="row  justify-content-center">
+                    <div class="col-lg-6">
+                        <h3>Ice Products</h3>
+                        <p style="font-size:18px">
+                            "Protecting your well-being with our premium hand sanitizers, crafted with care and backed by science."
+                        </p>
+                    </div>
+                </div>
+
+               
+                <div class="social-links">
+                    <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="google-plus"><i class="bi bi-skype"></i></a>
+                    <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                </div>
+
+            </div>
+        </div>
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#206bfb" fill-opacity="1" d="M0,192L40,176C80,160,160,128,240,138.7C320,149,400,203,480,213.3C560,224,640,192,720,154.7C800,117,880,75,960,64C1040,53,1120,75,1200,74.7C1280,75,1360,53,1400,42.7L1440,32L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
+    </footer><!-- End Footer -->
+
+
 
 </MudLayout>
 
-
-  
-@code{
     
+@code{
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var targetUrl = "/template/assets/js/main.js";
-        await _js.InvokeVoidAsync("loadJs", targetUrl);
+        var templateMain = "/template/assets/js/main.js";
+        await _js.InvokeVoidAsync("loadJs", templateMain);
+
 
     }
 }

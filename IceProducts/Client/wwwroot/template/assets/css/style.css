@@ -257,9 +257,9 @@ h6 {
   transition: 0.5s;
 }
 
-.mobile-nav-toggle.bi-x {
-  color: #fff;
-}
+    .mobile-nav-toggle.bi-x {
+        color: #5f687b;
+    }
 
 @media (max-width: 991px) {
   .mobile-nav-toggle {
@@ -292,21 +292,24 @@ h6 {
 .navbar-mobile ul {
   display: block;
   position: absolute;
-  top: 55px;
-  right: 15px;
-  bottom: 15px;
-  left: 15px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
   padding: 10px 0;
-  border-radius: 10px;
   background-color: #fff;
   overflow-y: auto;
-  transition: 0.3s;
+  transition: ease-in 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
 }
 
 .navbar-mobile a,
 .navbar-mobile a:focus {
   padding: 10px 20px;
-  font-size: 15px;
+  font-size: 18px;
   color: #5f687b;
 }
 
@@ -351,7 +354,7 @@ h6 {
 .navbar-mobile .dropdown ul li:hover>a {
   color: #206bfb;
 }
-
+    
 .navbar-mobile .dropdown>.dropdown-active {
   display: block;
 }
@@ -361,16 +364,18 @@ h6 {
 --------------------------------------------------------------*/
 #hero {
     width: 100%;
-    height: 100vh;
+    height: 88vh;
 /*    background: #fff;*/
 /*      background: url("../img/handsa10.png");*/
 
-    background-color: #d3eef1;
-    background-repeat: no-repeat;
+/*    background:url(../img/sanitizer.jpg) no-repeat;*/
+/*    background-repeat: no-repeat;*/
     background-size: cover;
     background-position: center;
     padding-top: 82px;
 }
+
+.
 
 #hero h1 {
   margin: 0;
@@ -1090,7 +1095,7 @@ section {
   color: #fff;
 }
 
-.contact .php-email-form {
+.contact .contact-us-form {
   width: 100%;
   border-top: 3px solid #206bfb;
   border-bottom: 3px solid #206bfb;
@@ -1098,11 +1103,11 @@ section {
   background-color: #f9f9fa;
 }
 
-.contact .php-email-form .form-group {
+.contact .contact-us-form .form-group {
   padding-bottom: 8px;
 }
 
-.contact .php-email-form .error-message {
+.contact .contact-us-form .error-message {
   display: none;
   color: #fff;
   background: #ed3c0d;
@@ -1111,11 +1116,11 @@ section {
   font-weight: 600;
 }
 
-.contact .php-email-form .error-message br+br {
+.contact .contact-us-form .error-message br+br {
   margin-top: 25px;
 }
 
-.contact .php-email-form .sent-message {
+.contact .contact-us-form .sent-message {
   display: none;
   color: #fff;
   background: #18d26e;
@@ -1124,14 +1129,14 @@ section {
   font-weight: 600;
 }
 
-.contact .php-email-form .loading {
+.contact .contact-us-form .loading {
   display: none;
   background: #fff;
   text-align: center;
   padding: 15px;
 }
 
-.contact .php-email-form .loading:before {
+.contact .contact-us-form .loading:before {
   content: "";
   display: inline-block;
   border-radius: 50%;
@@ -1143,28 +1148,28 @@ section {
   animation: animate-loading 1s linear infinite;
 }
 
-.contact .php-email-form input,
-.contact .php-email-form textarea {
+.contact .contact-us-form input,
+.contact .contact-us-form textarea {
   border-radius: 0;
   box-shadow: none;
   font-size: 14px;
   border-radius: 4px;
 }
 
-.contact .php-email-form input:focus,
-.contact .php-email-form textarea:focus {
+.contact .contact-us-form input:focus,
+.contact .contact-us-form textarea:focus {
   border-color: #206bfb;
 }
 
-.contact .php-email-form input {
+.contact .contact-us-form input {
   height: 44px;
 }
 
-.contact .php-email-form textarea {
+.contact .contact-us-form textarea {
   padding: 10px 12px;
 }
 
-.contact .php-email-form button[type=submit] {
+.contact .contact-us-form button[type=submit] {
   background: #206bfb;
   border: 0;
   padding: 10px 24px;
@@ -1173,8 +1178,8 @@ section {
   border-radius: 4px;
 }
 
-.contact .php-email-form button[type=submit]:hover {
-  background: #206bfb;
+.contact .contact-us-form button[type=submit]:hover {
+  background: #16df7e;
 }
 
 @keyframes animate-loading {
@@ -1434,4 +1439,39 @@ section {
 .promotion-section {
     padding: 10%;
 }
-        
+
+.simple-loader {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-block;
+    border-top: 3px solid #FFF;
+    border-right: 3px solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.scs{
+    position:relative;
+/*    background:url("../img/wave1.svg") no-repeat center; */
+}
+.scs::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left:50%;
+    transform:translateX(-50%);
+    width:  90px;
+    height: 3px;
+    background-color:var(--blue);
+}
