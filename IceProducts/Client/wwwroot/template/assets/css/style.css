@@ -1372,37 +1372,6 @@ section {
 }
 
 
-.how-section1 {
-    margin-top: -15%;
-    padding: 10%;
-}
-
-    .how-section1 h4 {
-        color: #ffa500;
-        font-weight: bold;
-        font-size: 30px;
-    }
-
-    .how-section1 .subheading {
-        color: #3931af;
-        font-size: 20px;
-    }
-
-    .how-section1 .row-1 {
-        margin-top: 15%;
-    }
-
-    .how-section1 .row .how-img {
-        text-align: center;
-    }
-
-.how-img img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-    object-position: 50% 50%;
-}
-
 .semi-underlined {
     position: relative;
 }
@@ -1440,6 +1409,9 @@ section {
     padding: 10%;
 }
 
+/* 
+    Send Message loader
+*/
 .simple-loader {
     width: 18px;
     height: 18px;
@@ -1461,17 +1433,28 @@ section {
     }
 }
 
-.scs{
-    position:relative;
-/*    background:url("../img/wave1.svg") no-repeat center; */
+
+/*
+    Main Loader
+*/
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid;
+    border-color: #206bfb transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
 }
-.scs::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left:50%;
-    transform:translateX(-50%);
-    width:  90px;
-    height: 3px;
-    background-color:var(--blue);
-}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+} 
