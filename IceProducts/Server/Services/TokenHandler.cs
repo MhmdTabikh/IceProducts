@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IceProducts.Server.Data;
+using IceProducts.Server.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using TokenOptions = IceProducts.Server.Data.TokenOptions;
 
 namespace IceProducts.Server.Services;
 
