@@ -1,0 +1,54 @@
+﻿@inherits LayoutComponentBase
+
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+
+
+<MudLayout>
+    <MudDrawer Class="bg-dark" @bind-Open="@open" ClipMode="clipMode" Breakpoint="@breakpoint" OpenMiniOnHover="true" Elevation="1" Variant="@DrawerVariant.Mini">
+
+        <MudNavMenu Class="pt-2">
+            <div class="d-flex align-items-center justify-content-center">
+            <MudIcon Icon="@Icons.Material.Rounded.Person" Color="Color.Primary"></MudIcon>
+            @if (open)
+            {
+                <span class="ms-2 text-white">Welcome!</span>
+            }
+            </div>
+        </MudNavMenu>
+
+
+
+        <MudNavMenu Class="mt-auto pb-3">
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Rounded.Logout" IconColor="Color.Default">Logout</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
+        </MudNavMenu>
+    </MudDrawer>
+
+    <MudMainContent Class="pt-16 px-16">
+        @Body
+    </MudMainContent>
+</MudLayout>
+
+
+
+@code {
+    bool open = false;
+    bool dense = false;
+    bool preserveOpenState = false;
+    Breakpoint breakpoint = Breakpoint.Lg;
+    DrawerClipMode clipMode = DrawerClipMode.Never;
+
+    void ToggleDrawer()
+    {
+        open = !open;
+    }
+
+}
+
+@code {
+
+}

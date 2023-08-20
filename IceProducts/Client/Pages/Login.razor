@@ -1,0 +1,12 @@
+﻿@page "/login"
+@using IceProducts.Client.Components
+@using IceProducts.Shared.InputModels;
+@layout NoLayout
+
+<LoginForm UserInput="userInputModel"></LoginForm>
+
+@code{
+	private UserInputModel userInputModel = new UserInputModel();
+
+
+}

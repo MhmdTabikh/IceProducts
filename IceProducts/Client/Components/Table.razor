@@ -1,0 +1,508 @@
+﻿<div class="main-content">
+                <div class="container">
+                    <!-- Table -->
+                    <div class="row">
+
+                        <div class="col">
+                            <div class="card shadow">
+                                <div class="card-header border-0">
+                                    <h3 class="mb-0 text-center">Products</h3>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table align-items-center table-flush">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Description</th>
+                                                <th scope="col">Sizes</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="media align-items-center">
+                                                        <a href="#" class="avatar rounded-circle mr-3">
+                                                            <img alt="Image placeholder"
+                                                                src="https://raw.githack.com/creativetimofficial/argon-dashboard/master/assets/img/theme/angular.jpg">
+                                                        </a>
+                                                        <div class="media-body">
+                                                            <span class="mb-0 text-sm">Angular Now UI Kit PRO</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+
+                                                <td>
+                                                    Angular Now UI Kit PROAngular Now UI Kit PROAngular Now UI Kit
+                                                </td>
+
+                                                <td>
+                                                    1x,2x,3x
+                                                </td>
+
+                                                <td>
+                                        <button class="btn btn-sm bg-primary text-white" style=" outline:none;box-shadow:none;">
+                                            <i class="bi bi-pen fs-6"></i></button>
+                                        <button class="btn btn-sm bg-danger text-white" style=" outline:none;box-shadow:none;">
+                                            <i class="bi bi-trash fs-6"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer py-4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ <style>
+        :root {
+                    --blue: #5e72e4;
+                    --indigo: #5603ad;
+                    --purple: #8965e0;
+                    --pink: #f3a4b5;
+                    --red: #f5365c;
+                    --orange: #fb6340;
+                    --yellow: #ffd600;
+                    --green: #2dce89;
+                    --teal: #11cdef;
+                    --cyan: #2bffc6;
+                    --white: #fff;
+                    --gray: #8898aa;
+                    --gray-dark: #32325d;
+                    --light: #ced4da;
+                    --lighter: #e9ecef;
+                    --primary: #5e72e4;
+                    --secondary: #f7fafc;
+                    --success: #2dce89;
+                    --info: #11cdef;
+                    --warning: #fb6340;
+                    --danger: #f5365c;
+                    --light: #adb5bd;
+                    --dark: #212529;
+                    --default: #172b4d;
+                    --white: #fff;
+                    --neutral: #fff;
+                    --darker: black;
+                    --breakpoint-xs: 0;
+                    --breakpoint-sm: 576px;
+                    --breakpoint-md: 768px;
+                    --breakpoint-lg: 992px;
+                    --breakpoint-xl: 1200px;
+                    --font-family-sans-serif: Open Sans, sans-serif;
+                    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+                }
+             
+                body {
+                    font-family: Open Sans, sans-serif;
+                    font-size: 1rem;
+                    font-weight: 400;
+                    line-height: 1.5;
+                    margin: 0;
+                    text-align: left;
+                    color: #525f7f;
+                    background-color: #f8f9fe;
+                }
+
+                [tabindex='-1']:focus {
+                    outline: 0 !important;
+                }
+}
+
+                table {
+                    border-collapse: collapse;
+                }
+
+
+                th {
+                    text-align: inherit;
+                }
+
+                h2,
+                h3,
+                .h2,
+                .h3 {
+                    font-family: inherit;
+                    font-weight: 600;
+                    line-height: 1.5;
+                    margin-bottom: .5rem;
+                    color: #32325d;
+                }
+
+                h2,
+                .h2 {
+                    font-size: 1.25rem;
+                }
+
+                h3,
+                .h3 {
+                    font-size: 1.0625rem;
+                }
+
+                .container {
+                    width: 100%;
+                    margin-right: auto;
+                    margin-left: auto;
+                    padding-right: 15px;
+                    padding-left: 15px;
+                }
+
+                @@media (min-width: 576px) {
+                    .container {
+                        max-width: 540px;
+                    }
+                }
+
+               @@media (min-width: 768px) {
+                    .container {
+                        max-width: 720px;
+                    }
+                }
+
+                @@media (min-width: 992px) {
+                    .container {
+                        max-width: 960px;
+                    }
+                }
+
+                @@media (min-width: 1200px) {
+                    .container {
+                        max-width: 1140px;
+                    }
+                }
+
+                .row {
+                    display: flex;
+                    margin-right: -15px;
+                    margin-left: -15px;
+                    flex-wrap: wrap;
+                }
+
+                .col,
+                .col-xl-6 {
+                    position: relative;
+                    width: 100%;
+                    min-height: 1px;
+                    padding-right: 15px;
+                    padding-left: 15px;
+                }
+
+                .col {
+                    max-width: 100%;
+                    flex-basis: 0;
+                    flex-grow: 1;
+                }
+
+                @@media (min-width: 1200px) {
+
+                    .col-xl-6 {
+                        max-width: 50%;
+                        flex: 0 0 50%;
+                    }
+                }
+
+                .table {
+                    width: 100%;
+                    margin-bottom: 1rem;
+                    background-color: transparent;
+                }
+
+                .table th,
+                .table td {
+                    padding: 1rem;
+                    vertical-align: top;
+                    border-top: 1px solid #e9ecef;
+                }
+
+                .table thead th {
+                    vertical-align: bottom;
+                    border-bottom: 2px solid #e9ecef;
+                }
+
+                .table tbody+tbody {
+                    border-top: 2px solid #e9ecef;
+                }
+
+                .table .table {
+                    background-color: #f8f9fe;
+                }
+
+                .table .thead-light th {
+                    color: #8898aa;
+                    border-color: #e9ecef;
+                    background-color: #f6f9fc;
+                }
+
+
+                .table-responsive {
+                    display: block;
+                    overflow-x: auto;
+                    width: 100%;
+                    -webkit-overflow-scrolling: touch;
+                    -ms-overflow-style: -ms-autohiding-scrollbar;
+                }
+
+               
+                .nav {
+                    display: flex;
+                    margin-bottom: 0;
+                    padding-left: 0;
+                    list-style: none;
+                    flex-wrap: wrap;
+                }
+
+                .card {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 0;
+                    word-wrap: break-word;
+                    border: 1px solid rgba(0, 0, 0, .05);
+                    border-radius: .375rem;
+                    background-color: #fff;
+                    background-clip: border-box;
+                }
+
+                .card-header {
+                    margin-bottom: 0;
+                    padding: 1.25rem 1.5rem;
+                    border-bottom: 1px solid rgba(0, 0, 0, .05);
+                    background-color: #fff;
+                }
+
+                .card-header:first-child {
+                    border-radius: calc(.375rem - 1px) calc(.375rem - 1px) 0 0;
+                }
+
+                .card-footer {
+                    padding: 1.25rem 1.5rem;
+                    border-top: 1px solid rgba(0, 0, 0, .05);
+                    background-color: #fff;
+                }
+
+                .card-footer:last-child {
+                    border-radius: 0 0 calc(.375rem - 1px) calc(.375rem - 1px);
+                }
+
+                .media {
+                    display: flex;
+                    align-items: flex-start;
+                }
+
+                .media-body {
+                    flex: 1 1;
+                }
+
+                @@media (min-width: 1200px) {
+
+                    .justify-content-xl-between {
+                        justify-content: space-between !important;
+                    }
+                }
+
+                
+                .shadow {
+                    box-shadow: 0 0 2rem 0 rgba(136, 152, 170, .15) !important;
+                }
+
+               
+                .mr-2 {
+                    margin-right: .5rem !important;
+                }
+
+                .mr-3 {
+                    margin-right: 1rem !important;
+                }
+
+                .mr-4 {
+                    margin-right: 1.5rem !important;
+                }
+
+                .mt-5 {
+                    margin-top: 3rem !important;
+                }
+
+                .mb-5 {
+                    margin-bottom: 3rem !important;
+                }
+
+                .mt-7 {
+                    margin-top: 6rem !important;
+                }
+
+                .py-4 {
+                    padding-top: 1.5rem !important;
+                }
+
+                .py-4 {
+                    padding-bottom: 1.5rem !important;
+                }
+
+                
+
+               
+                .text-sm {
+                    font-size: .875rem !important;
+                }
+
+                .text-white {
+                    color: #fff !important;
+                }
+
+                a.text-white:hover,
+                a.text-white:focus {
+                    color: #e6e6e6 !important;
+                }
+
+                .text-light {
+                    color: #ced4da !important;
+                }
+
+                a.text-light:hover,
+                a.text-light:focus {
+                    color: #b1bbc4 !important;
+                }
+
+                .avatar {
+                    font-size: 1rem;
+                    display: inline-flex;
+                    width: 48px;
+                    height: 48px;
+                    color: #fff;
+                    border-radius: 50%;
+                    background-color: #adb5bd;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .avatar img {
+                    width: 100%;
+                    border-radius: 50%;
+                }
+
+                .avatar-sm {
+                    font-size: .875rem;
+                    width: 36px;
+                    height: 36px;
+                }
+
+                .avatar-group .avatar {
+                    position: relative;
+                    z-index: 2;
+                    border: 2px solid #fff;
+                }
+
+                .avatar-group .avatar:hover {
+                    z-index: 3;
+                }
+
+                .avatar-group .avatar+.avatar {
+                    margin-left: -1rem;
+                }
+
+                
+
+                .btn:hover {
+                    transform: translateY(-1px);
+                }
+
+                .btn:not(:last-child) {
+                    margin-right: .5rem;
+                }
+
+                
+
+                .main-content {
+                    position: relative;
+                }
+
+                .footer {
+                    padding: 2.5rem 0;
+                    background: #f7fafc;
+                }
+
+                .footer .copyright {
+                    font-size: .875rem;
+                }
+
+
+                .table thead th {
+                    font-size: .65rem;
+                    padding-top: .75rem;
+                    padding-bottom: .75rem;
+                    letter-spacing: 1px;
+                    text-transform: uppercase;
+                    border-bottom: 1px solid #e9ecef;
+                }
+
+                .table th {
+                    font-weight: 600;
+                }
+
+                .table td .progress {
+                    width: 120px;
+                    height: 3px;
+                    margin: 0;
+                }
+
+                .table td,
+                .table th {
+                    font-size: .8125rem;
+                    white-space: nowrap;
+                }
+
+                .table.align-items-center td,
+                .table.align-items-center th {
+                    vertical-align: middle;
+                }
+
+                .table .thead-dark th {
+                    color: #4d7bca;
+                    background-color: #1c345d;
+                }
+
+                .table .thead-light th {
+                    color: #8898aa;
+                    background-color: #f6f9fc;
+                }
+
+                .table-flush td,
+                .table-flush th {
+                    border-right: 0;
+                    border-left: 0;
+                }
+
+                .table-flush tbody tr:first-child td,
+                .table-flush tbody tr:first-child th {
+                    border-top: 0;
+                }
+
+                .table-flush tbody tr:last-child td,
+                .table-flush tbody tr:last-child th {
+                    border-bottom: 0;
+                }
+
+                .card .table {
+                    margin-bottom: 0;
+                }
+
+                .card .table td,
+                .card .table th {
+                    padding-right: 1.5rem;
+                    padding-left: 1.5rem;
+                }
+
+                p {
+                    font-size: 1rem;
+                    font-weight: 300;
+                    line-height: 1.7;
+                }
+
+                @@media (max-width: 768px) {
+                    .btn {
+                        margin-bottom: 10px;
+                    }
+                }
+            </style>
