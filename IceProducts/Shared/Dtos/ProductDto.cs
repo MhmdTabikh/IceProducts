@@ -16,3 +16,4 @@ namespace IceProducts.Shared.Dtos
         public byte[] Image { get; set; }
     }
 }
+    

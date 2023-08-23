@@ -1,0 +1,93 @@
+﻿@using IceProducts.Shared.Dtos;
+@using IceProducts.Shared.InputModels;
+@using Microsoft.AspNetCore.Http;
+<EditForm class="form p-2" Model="TableProduct" OnValidSubmit="Create">
+    <MudDialog>
+
+        <DialogContent>
+
+            <div class="container row d-flex justify-content-center align-items-center">
+
+                <div class="col-6">
+                    <ImagePreviewer OriginalImage="TableProduct.Image"  BindUploadedImageTo="TableProduct"></ImagePreviewer>
+                </div>
+                <div class="col-6">
+                    <InputText style="outline:none;box-shadow:none;" class="form-control" placeholder="Name" id="name"  @bind-Value="TableProduct.Name"></InputText>
+                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" placeholder="Sizes [Large,small...] " id="sizes" @bind-Value="TableProduct.Sizes"></InputText>
+                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" id="description" @bind-Value="TableProduct.SmallDescription" placeholder="small description"></InputText>
+                    <InputTextArea style="outline:none;box-shadow:none;" rows="5" class="form-control mt-3" id="longdescription" placeholder="detailed description" @bind-Value="TableProduct.LongDescription"></InputTextArea>
+                </div>
+            </div>
+           
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton Color="Color.Primary" Disabled="@_isSaving" ButtonType="ButtonType.Submit">
+                @if (_isSaving)
+                {
+                    <span class="simple-loader"></span>
+                }
+                else
+                {
+                    <span>Save</span>
+                }
+            </MudButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public ProductDto TableProduct { get; set; } = new ProductDto();
+
+    [Parameter] public HashSet<ProductDto> TableProducts { get; set; } = new HashSet<ProductDto>();
+
+    [Inject] public HttpClient HttpRequest { get; set; }
+
+    private static readonly HashSet<string> acceptedExtenstions =
+    new HashSet<string> {
+            "image/apng",
+            "image/bmp",
+            "image/gif",
+            "image/jpeg",
+            "image/pjpeg",
+            "image/png",
+            "image/svg+xml",
+            "image/tiff",
+            "image/webp",
+            "image/x-icon"
+            };
+
+    private bool _disableSubmit = false;
+    private bool _isSaving = false;
+
+    private void Cancel() {
+        MudDialog.Cancel();
+    }
+    private async Task Create()
+    {
+        _disableSubmit = true;
+        _isSaving = true;
+
+        string apiPath = "api/product/create";
+        var response = await HttpRequest.PostAsJsonAsync(apiPath, TableProduct);
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            // do something
+            var productDto = await response.Content.ReadFromJsonAsync<ProductDto>();
+            MudDialog.Close(DialogResult.Ok(new ProductDto()));
+        }
+        else
+        {
+            // do something
+        }
+
+        _disableSubmit = false;
+        _isSaving = false;
+    }
+}

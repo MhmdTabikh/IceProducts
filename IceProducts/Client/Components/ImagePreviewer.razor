@@ -1,0 +1,74 @@
+﻿@using IceProducts.Shared.Dtos;
+<div class="custom-file">
+    <InputFile accept="img/*" class="custom-file-input opacity-0" style="width:0px; height:0px;" id="@BindUploadedImageTo.Id" OnChange="UploadImage"></InputFile>
+    <div class="container text-center">
+        <label class="custom-file-label" for="@BindUploadedImageTo.Id">
+
+            @if(BindUploadedImageTo.Image == null)
+            {   
+             <img src="./images/shield.png" width="100"  style="cursor:pointer;" />
+             <span style="color:red;display:block;" hidden="@isErrorHidden">@errorMessage</span>
+            }
+            else
+            {
+                <img src="data:image;base64,@Convert.ToBase64String(BindUploadedImageTo.Image)" class="card-img-top product-img" width="120"  style="cursor:pointer;" />
+            }
+        </label>
+    </div>
+</div>
+
+
+
+<style>
+    .product-img {
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+</style>
+
+@code {
+
+
+    [Parameter]
+    public byte[] OriginalImage { get; set; } = Array.Empty<byte>();
+
+    [Parameter]
+    public ProductDto BindUploadedImageTo { get; set; }
+
+    private string errorMessage = "This file is not appropraite";
+    private bool isErrorHidden = true;
+    private bool _isOriginalImageHidden = false;
+
+    public async Task UploadImage(InputFileChangeEventArgs importedFile)
+    {
+        if ((importedFile.File != null))
+        {
+            string fileType = importedFile.File.ContentType;
+            _isOriginalImageHidden = true;
+            var image = await importedFile.File.RequestImageFileAsync(importedFile.File.ContentType, 500, 500);
+            BindUploadedImageTo.Image = await GetImageAsByteArray(image);
+        }
+        else
+        {
+            _isOriginalImageHidden = false;
+        }
+
+    }
+
+    private static async Task<byte[]> GetImageAsByteArray(IBrowserFile file)
+    {
+        var imageFile = new byte[file.Size];
+
+        //Max ~5MB
+        if (file.Size <= 1024 * 5000)
+        {
+            await file.OpenReadStream(maxAllowedSize: 1024 * 5000).ReadAsync(imageFile);
+        }
+        return imageFile;
+    }
+
+
+}

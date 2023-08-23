@@ -1,0 +1,230 @@
+﻿@page "/settings"
+@using IceProducts.Shared.InputModels;
+@layout AdminLayout
+
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <EditForm Model="ChangePasswordInputModel" class="login100-form">
+
+                <span class="login100-form-title" style="padding-bottom:26px;font-family:Calibri">
+                    Change Password
+                </span>
+
+                <span class="login100-form-title" style="padding-bottom:48px;">
+                    <i class="bi bi-eye" style="width: 112px;"></i>
+                </span>
+
+                <div class="form-group mt-2">
+                    <span><i class="bi bi-lock"></i></span>
+                    <InputText @bind-Value="ChangePasswordInputModel.NewPassword" type="password" class="form-field" placeholder="New Password" style="outline:none;"></InputText>
+                </div>
+
+                <div class="form-group mt-2">
+                    <span><i class="bi bi-lock"></i></span>
+                    <InputText @bind-Value="_confirmPassword" class="form-field" placeholder="Confirm Password" style="outline:none;"></InputText>
+                </div>
+
+
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-dark" style="padding:8px 35px;box-shadow:none;" disabled="@_isLoggingIn">
+                        @if (_isLoggingIn)
+                        {
+                            <span class="simple-loader"></span>
+                        }
+                        else
+                        {
+                            <span>Save</span>
+                        }
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    :root {
+        --input-color: #99A3BA;
+        --input-border: #CDD9ED;
+        --input-background: #fff;
+        --input-placeholder: #CBD1DC;
+        --input-border-focus: #275EFE;
+        --group-color: var(--input-color);
+        --group-border: var(--input-border);
+        --group-background: #EEF4FF;
+        --group-color-focus: #fff;
+        --group-border-focus: var(--input-border-focus);
+        --group-background-focus: #678EFE;
+    }
+
+    .form-field {
+        display: block;
+        width: 100%;
+        padding: 8px 16px;
+        line-height: 25px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: inherit;
+        border-radius: 6px;
+        -webkit-appearance: none;
+        color: var(--input-color);
+        border: 1px solid var(--input-border);
+        background: var(--input-background);
+        transition: border .3s ease;
+        &::placeholder
+
+    {
+        color: var(--input-placeholder);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: var(--input-border-focus);
+    }
+
+    }
+
+    .form-group {
+        position: relative;
+        display: flex;
+        width: 100%;
+        & > span, .form-field
+
+    {
+        white-space: nowrap;
+        display: block;
+        &:not(:first-child):not(:last-child)
+
+    {
+        border-radius: 0;
+    }
+
+    &:first-child {
+        border-radius: 6px 0 0 6px;
+    }
+
+    &:last-child {
+        border-radius: 0 6px 6px 0;
+    }
+
+    &:not(:first-child) {
+        margin-left: -1px;
+    }
+
+    }
+
+    .form-field {
+        position: relative;
+        z-index: 1;
+        flex: 1 1 auto;
+        width: 1%;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    & > span {
+        text-align: center;
+        padding: 8px 12px;
+        font-size: 14px;
+        line-height: 25px;
+        color: var(--group-color);
+        background: var(--group-background);
+        border: 1px solid var(--group-border);
+        transition: background .3s ease, border .3s ease, color .3s ease;
+    }
+
+    &:focus-within {
+        & > span
+
+    {
+        color: var(--group-color-focus);
+        background: var(--group-background-focus);
+        border-color: var(--group-border-focus);
+    }
+
+    }
+    }
+
+
+    .limiter {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .container-login100 {
+        width: 100%;
+        min-height: 100vh;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+         /* background: #f2f2f2; */
+    }
+
+    .wrap-login100 {
+        width: 390px;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        padding: 77px 55px 33px 55px;
+        box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+        -o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+        -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    /*------------------------------------------------------------------
+            [ Form ]*/
+
+    .login100-form {
+        width: 100%;
+    }
+
+    .login100-form-title {
+        display: block;
+        font-family: Poppins-Bold;
+        font-size: 30px;
+        color: #333333;
+        line-height: 1.2;
+        text-align: center;
+    }
+
+        .login100-form-title i {
+            font-size: 60px;
+        }
+
+
+    /*------------------------------------------------------------------
+        [ Responsive ]*/
+
+    @@media (max-width: 576px) {
+        .wrap-login100 {
+            padding: 77px 15px 33px 15px;
+        }
+    }
+
+    button:focus {
+        outline: none;
+        border: none;
+    }
+</style>
+
+
+@code {
+    public ChangePasswordInputModel ChangePasswordInputModel { get; set; } = new ChangePasswordInputModel();
+
+    private string _confirmPassword;
+    private bool _disableSubmit = false;
+    private bool _isLoggingIn = false;
+
+}

@@ -1,18 +1,46 @@
 ﻿@page "/admin"
 @using IceProducts.Client.Components
+@using IceProducts.Shared.Dtos;
+@using IceProducts.Shared.InputModels;
+@inject IDialogService Dialog
 @layout AdminLayout
 
 
 
 
-<MudIconButton Icon="@Icons.Material.Filled.Add" Style="border-radius:50%; position:fixed; bottom:0; right:0; padding:10px; margin:20px;" Variant="Variant.Filled" Color="Color.Default" Size="Size.Large" />
-
-<Table>
-
-</Table>
-
+<MudIconButton OnClick="@((e) => OpenDialog(maxWidth))" Icon="@Icons.Material.Filled.Add" Style="border-radius:50%; position:fixed; bottom:0; right:0; padding:10px; margin:20px;" Variant="Variant.Filled" Color="Color.Default" Size="Size.Large" />
+<Table Products="Products"></Table>
 
 @code {
+    public ProductInputModel DialogProduct { get; set; } = new ProductInputModel();
 
-    
+    public HashSet<ProductDto> Products { set; get; } = new HashSet<ProductDto>
+    {
+        new ProductDto
+        {
+            Id = Guid.NewGuid(),
+            LongDescription="asdasdsadsa",
+            Sizes = "asdasdasdasdsad"
+        },
+        new ProductDto()
+        {
+            Id = Guid.NewGuid()
+        },
+        new ProductDto(),
+        new ProductDto()
+    };
+
+    DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = false };
+
+    private async Task OpenDialog(DialogOptions options)
+    {
+        var dialogResult = Dialog.Show<AddProductDialogue>("", options);
+
+        if (dialogResult.Result.IsCanceled)
+        {
+            return;
+        }
+
+        var result = await dialogResult.GetReturnValueAsync<ProductInputModel>();
+    }
 }
