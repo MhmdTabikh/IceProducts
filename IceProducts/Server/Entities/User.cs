@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IceProducts.Server.Data;
+namespace IceProducts.Server.Entities;
 public class User
 {
-    public int Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
-    [Required]
     [EmailAddress]
     [StringLength(255)]
     public string Email { get; set; }

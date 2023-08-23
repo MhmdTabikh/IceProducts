@@ -1,4 +1,5 @@
 ﻿using IceProducts.Server.Data;
+using IceProducts.Server.Entities;
 using IceProducts.Server.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

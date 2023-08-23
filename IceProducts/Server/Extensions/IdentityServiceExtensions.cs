@@ -9,8 +9,10 @@ public static class IdentityServiceExtenstions
 {
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
     {
+        //binds json object to C# object
         services.Configure<TokenOptions>(configuration.GetSection("TokenOptions"));
 
+        //retrieves  the json object as C# object
         var tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
         var signingConfigurations = new SigningConfigurations(tokenOptions.Secret);
