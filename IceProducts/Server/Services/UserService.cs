@@ -17,10 +17,25 @@ namespace IceProducts.Server.Services
             _context = context;
         }
 
-        public async Task<User?> IsAuthenticated(UserInputModel userInputModel)
+        public async Task<User?> Authorize(UserInputModel userInputModel)
         {
-            string hashedPassword = _passwordHasher.HashPassword(userInputModel.Password);
-            return await _context.Users.Where(x => x.Email == userInputModel.Email && _passwordHasher.PasswordMatches(userInputModel.Password,hashedPassword)).FirstOrDefaultAsync();
+            var queryable =  await _context.Users.ToListAsync();
+            return queryable.FirstOrDefault(x => x.Email == userInputModel.Email && _passwordHasher.PasswordMatches(userInputModel.Password,x.Password));
+        }
+
+        public async Task<User?> GetFirst()
+        {
+            return await _context.Users.FirstOrDefaultAsync();
+        }
+
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public void UpdatePassword(User user, string newPassword)
+        {
+            user.Password = _passwordHasher.HashPassword(newPassword);
         }
     }
 }

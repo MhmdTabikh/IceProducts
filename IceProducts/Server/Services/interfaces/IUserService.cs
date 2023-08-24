@@ -5,6 +5,10 @@ namespace IceProducts.Server.Services.interfaces
 {
     public interface IUserService
     {
-        Task<User?> IsAuthenticated(UserInputModel userInputModel);
+        Task<User?> Authorize(UserInputModel userInputModel);
+        Task<User?> GetFirst();
+        Task Save();
+
+        void UpdatePassword(User user, string newPassword);
     }
 }

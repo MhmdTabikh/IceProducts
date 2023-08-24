@@ -9,12 +9,12 @@ namespace IceProducts.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly ITokenHandler _tokenHandler;
 
-        public AuthenticationController(IUserService userService, ITokenHandler tokenHandler)
+        public UserController(IUserService userService, ITokenHandler tokenHandler)
         {
             _userService = userService;
             _tokenHandler = tokenHandler;
@@ -23,7 +23,7 @@ namespace IceProducts.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<AccessToken>> Login([FromForm] UserInputModel userInput)
         {
-            var user = await _userService.IsAuthenticated(userInput);
+            var user = await _userService.Authorize(userInput);
 
             if(user != null)
             {
@@ -32,5 +32,19 @@ namespace IceProducts.Server.Controllers
 
             return Unauthorized(new BaseResponse(false, "Wrong email or password"));
         }
+
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordInputModel changePasswordInputModel)
+        {
+            //validate the new password later
+
+            //no need to use HttpContextAccessor there's only one record
+            var user = await _userService.GetFirst();
+            _userService.UpdatePassword(user, changePasswordInputModel.NewPassword);
+            await _userService.Save();
+            return Ok();
+        }
+
+
     }
 }
