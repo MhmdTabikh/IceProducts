@@ -2,6 +2,7 @@
 using IceProducts.Server.Services;
 using IceProducts.Server.Services.interfaces;
 using IceProducts.Shared.InputModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,7 @@ namespace IceProducts.Server.Controllers
             return Unauthorized(new BaseResponse(false, "Wrong email or password"));
         }
 
+        [Authorize]
         [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordInputModel changePasswordInputModel)
         {
