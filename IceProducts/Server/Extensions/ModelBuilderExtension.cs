@@ -10,11 +10,15 @@ namespace IceProducts.Server.Extensions
     {
         internal static void SeedData(this ModelBuilder modelBuilder)
         {
+            PasswordHasher hasher = new PasswordHasher();
+            string email = "ta.a981111@gmail.ccom";
+            string password = "admin";
+
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = Guid.NewGuid(),
-                Email = "ta.a981111@gmail.com",
-                Password = "test"
+                Email = email,
+                Password = hasher.HashPassword(password)
             });
         }
     }

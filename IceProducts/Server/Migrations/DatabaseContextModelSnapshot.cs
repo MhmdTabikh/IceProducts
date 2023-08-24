@@ -72,9 +72,9 @@ namespace IceProducts.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("867752b4-e747-43b7-9130-705568d8caa1"),
-                            Email = "ta.a981111@gmail.com",
-                            Password = "test"
+                            Id = new Guid("cd145e5b-b3a2-4865-9c86-db766e9f08e0"),
+                            Email = "ta.a981111@gmail.ccom",
+                            Password = "ALeMWsp97eNrif3DhIeNHW9JSqEJCuVfWn6F9A43hIwv0IHlp+w5E4rrQvWvvmkSEQ=="
                         });
                 });
 #pragma warning restore 612, 618

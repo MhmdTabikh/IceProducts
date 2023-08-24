@@ -19,7 +19,8 @@ namespace IceProducts.Server.Services
 
         public async Task<User?> IsAuthenticated(UserInputModel userInputModel)
         {
-            return await _context.Users.Where(x => x.Email == userInputModel.Email && x.Password == userInputModel.Password).FirstOrDefaultAsync();
+            string hashedPassword = _passwordHasher.HashPassword(userInputModel.Password);
+            return await _context.Users.Where(x => x.Email == userInputModel.Email && _passwordHasher.PasswordMatches(userInputModel.Password,hashedPassword)).FirstOrDefaultAsync();
         }
     }
 }

@@ -42,7 +42,7 @@ namespace IceProducts.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Password" },
-                values: new object[] { new Guid("867752b4-e747-43b7-9130-705568d8caa1"), "ta.a981111@gmail.com", "test" });
+                values: new object[] { new Guid("cd145e5b-b3a2-4865-9c86-db766e9f08e0"), "ta.a981111@gmail.ccom", "ALeMWsp97eNrif3DhIeNHW9JSqEJCuVfWn6F9A43hIwv0IHlp+w5E4rrQvWvvmkSEQ==" });
         }
 
         /// <inheritdoc />
