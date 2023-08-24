@@ -19,6 +19,7 @@ namespace IceProducts.Server.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     SmallDescription = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false),
                     LongDescription = table.Column<string>(type: "text", nullable: false),
+                    Sizes = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
                 constraints: table =>
@@ -42,7 +43,7 @@ namespace IceProducts.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Password" },
-                values: new object[] { new Guid("cd145e5b-b3a2-4865-9c86-db766e9f08e0"), "ta.a981111@gmail.ccom", "ALeMWsp97eNrif3DhIeNHW9JSqEJCuVfWn6F9A43hIwv0IHlp+w5E4rrQvWvvmkSEQ==" });
+                values: new object[] { new Guid("dd32ee93-f8f8-406e-bc20-79d7f23ba227"), "ta.a981111@gmail.ccom", "AC2Kuhruh4TlArR0YjIDtMVPX4SRqAjRr2aaPIiuw1omZ3KPeJWw7a7Gzb9lTT2OAg==" });
         }
 
         /// <inheritdoc />

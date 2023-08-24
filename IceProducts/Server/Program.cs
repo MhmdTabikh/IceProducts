@@ -17,6 +17,7 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(buil
 }));
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
 

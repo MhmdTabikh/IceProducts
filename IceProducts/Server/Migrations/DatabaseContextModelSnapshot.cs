@@ -40,6 +40,9 @@ namespace IceProducts.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Sizes")
+                        .HasColumnType("text");
+
                     b.Property<string>("SmallDescription")
                         .IsRequired()
                         .HasMaxLength(75)
@@ -72,9 +75,9 @@ namespace IceProducts.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cd145e5b-b3a2-4865-9c86-db766e9f08e0"),
+                            Id = new Guid("dd32ee93-f8f8-406e-bc20-79d7f23ba227"),
                             Email = "ta.a981111@gmail.ccom",
-                            Password = "ALeMWsp97eNrif3DhIeNHW9JSqEJCuVfWn6F9A43hIwv0IHlp+w5E4rrQvWvvmkSEQ=="
+                            Password = "AC2Kuhruh4TlArR0YjIDtMVPX4SRqAjRr2aaPIiuw1omZ3KPeJWw7a7Gzb9lTT2OAg=="
                         });
                 });
 #pragma warning restore 612, 618

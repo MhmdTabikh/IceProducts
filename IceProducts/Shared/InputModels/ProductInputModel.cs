@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace IceProducts.Shared.InputModels
@@ -15,6 +15,6 @@ namespace IceProducts.Shared.InputModels
         public string Sizes { get; set; } = string.Empty;
 
         [Required]
-        public IBrowserFile Image { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

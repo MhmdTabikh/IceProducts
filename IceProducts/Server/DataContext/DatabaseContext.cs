@@ -20,6 +20,7 @@ namespace IceProducts.Server.DataContext
             modelBuilder.Entity<Product>().Property(x => x.SmallDescription).IsRequired().HasMaxLength(75);
             modelBuilder.Entity<Product>().Property(x => x.LongDescription).IsRequired();
             modelBuilder.Entity<Product>().Property(x => x.Name).IsRequired();
+            modelBuilder.Entity<Product>().Property(x => x.Sizes).IsRequired(false);
 
             modelBuilder.SeedData();
         }

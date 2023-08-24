@@ -10,6 +10,7 @@ namespace IceProducts.Server.Entities
         public string Name { get; set; } = string.Empty;
         public string SmallDescription { get; set; } = string.Empty;
         public string LongDescription { get; set; } = string.Empty;
+        public string? Sizes { get; set; }
         public byte[] Image { get; set; } = Array.Empty<byte>();
     }
 }
