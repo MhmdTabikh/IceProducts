@@ -60,8 +60,8 @@ namespace IceProducts.Server.Services
         private string GetMessageTemplate(string nameContact, string emailContact, string body)
         {
             string pStart = "<p>"; string pEnd = "</p>";
-            string header = $"You're receiving an email from :{nameContact}\n email: {emailContact}\n";
-            string messageBody = $"Message content:\n {body}";
+            string header = $"You're receiving an email from :<strong> {nameContact} </strong> <br> email: <strong>{emailContact}<strong> <br>";
+            string messageBody = $"Message content: <br>{body}";
 
             return pStart + header + messageBody + pEnd;
         }
