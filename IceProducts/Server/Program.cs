@@ -1,4 +1,5 @@
 using IceProducts.Server.DataContext;
+using IceProducts.Server.Emailing;
 using IceProducts.Server.Extensions;
 using IceProducts.Server.Services;
 using IceProducts.Server.Services.interfaces;
@@ -20,6 +21,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddSwaggerGen();
 

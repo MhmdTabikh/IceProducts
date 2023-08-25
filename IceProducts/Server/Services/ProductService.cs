@@ -18,7 +18,7 @@ namespace IceProducts.Server.Services.interfaces
 
         public async Task<ProductDto> Add(ProductInputModel productInput)
         {
-            var productImage = await ImageHandler.AdjustAndGetImageAsBytes(productInput.Image!);
+            var productImage = await ImageHandler.GetImageAsBytes(productInput.Image!);
 
             //add the mappers later
             var product = new Product
@@ -90,13 +90,13 @@ namespace IceProducts.Server.Services.interfaces
 
         public async Task Save(CancellationToken cancellationToken)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
         //change later not efficient (bshuf shu b3ml fiha b3den)
         public async Task Update(Product product, UpdateProductInputModel updateProductInput)
         {
-            var image = await ImageHandler.AdjustAndGetImageAsBytes(updateProductInput.Image);
+            var image = await ImageHandler.GetImageAsBytes(updateProductInput.Image);
 
             product.Image = image;
             product.Name = updateProductInput.Name;

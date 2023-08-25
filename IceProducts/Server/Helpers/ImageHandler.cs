@@ -5,11 +5,11 @@ namespace IceProducts.Server.Helpers
 {
     public class ImageHandler
     {
-        public static async Task<byte[]> AdjustAndGetImageAsBytes(IFormFile image)
+        public static async Task<byte[]> GetImageAsBytes(IFormFile image)
         {
-            var format = image.ContentType;
-            int maxWidth = 640;
-            int maxheight = 480;
+            //var format = image.ContentType;
+            //int maxWidth = 640;
+            //int maxheight = 480;
 
             // Process the image here
             using (var stream = image.OpenReadStream())
