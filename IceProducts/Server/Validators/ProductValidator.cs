@@ -1,10 +1,9 @@
 ﻿using FluentValidation;
-using IceProducts.Shared.InputModels;
-using Microsoft.AspNetCore.Http;
+using IceProducts.Server.Validators.ValidationModels;
 
 namespace IceProducts.Server.Validators
 {
-    public class ProductValidator : AbstractValidator<ProductInputModel>
+    public class ProductValidator : AbstractValidator<ProductValidationModel>
     {
         //~ 10MB
         private const long MaxSize = 10000000; 
@@ -28,11 +27,12 @@ namespace IceProducts.Server.Validators
                                 .NotEmpty();
             
             RuleFor(x => x.SmallDescription).NotEmpty()
-                                            .Null()
+                                            .NotNull()
                                             .MaximumLength(75);
 
             RuleFor(x => x.LongDescription).NotEmpty()
-                                           .Null();
+                                           .NotNull()
+                                           .MaximumLength(332);
 
             RuleFor(x => x.Image).NotNull()
                                  .Must(ValidateFormFileType)

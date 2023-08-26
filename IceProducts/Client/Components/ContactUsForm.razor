@@ -1,5 +1,6 @@
 ﻿@using IceProducts.Shared.InputModels;
 
+
 <div class="container">
     <h2 class="display-4 fw-bold text-center p-2">
         Contact
@@ -87,6 +88,8 @@
 
     [Inject]
     public HttpClient HttpRequest { get; set; }
+    [Inject]
+    public ISnackbar Snackbar { get; set; }
 
     private bool _disableSubmit = false;
     private bool _isSending = false;
@@ -96,23 +99,31 @@
         _disableSubmit = true;
         _isSending = true;
 
-        string apiPath = "api/email/send";
+        string apiPath = "api/email";
         var response = await HttpRequest.PostAsJsonAsync(apiPath, ContactUsInputModel);
 
 
         if(response.IsSuccessStatusCode)
         {
-            // do something
+            Snackbar.Add("Message Successfully Sent!", Severity.Success);
         }
         else
         {
-            // do something
+            var apiContent = await response.Content.ReadFromJsonAsync<BaseResponse>();
+            Snackbar.Add(apiContent?.Message, Severity.Warning);
         }
 
         _disableSubmit = false;
         _isSending = false;
+        ClearInput();
+    }
 
-
+    private void ClearInput()
+    {
+        ContactUsInputModel.Subject = "";
+        ContactUsInputModel.Message = "";
+        ContactUsInputModel.Name = "";
+        ContactUsInputModel.EmailAddress = "";
     }
 
 }

@@ -45,7 +45,7 @@ namespace IceProducts.Server.Services
             }
         }
 
-        private MimeMessage CreateMessage(string subject, string emailContact, string nameContact, string body)
+        private MimeMessage CreateMessage(string subject, string emailContact, string? nameContact, string body)
         {
             var message = new MimeMessage();
             message.Subject = subject;
@@ -57,10 +57,10 @@ namespace IceProducts.Server.Services
             return message;
         }
 
-        private string GetMessageTemplate(string nameContact, string emailContact, string body)
+        private string GetMessageTemplate(string? nameContact, string emailContact, string body)
         {
             string pStart = "<p>"; string pEnd = "</p>";
-            string header = $"You're receiving an email from :<strong> {nameContact} </strong> <br> email: <strong>{emailContact}<strong> <br>";
+            string header = $"You're receiving an email from :<strong> {nameContact ?? ""} </strong> <br> email: <strong>{emailContact}<strong> <br>";
             string messageBody = $"Message content: <br>{body}";
 
             return pStart + header + messageBody + pEnd;

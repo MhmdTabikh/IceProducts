@@ -1,4 +1,5 @@
-﻿using IceProducts.Server.Data;
+﻿using FluentValidation;
+using IceProducts.Server.Data;
 using IceProducts.Server.Services;
 using IceProducts.Server.Services.interfaces;
 using IceProducts.Shared.InputModels;
@@ -13,11 +14,13 @@ namespace IceProducts.Server.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITokenHandler _tokenHandler;
+        private readonly IValidator<ChangePasswordInputModel> _validator;
 
-        public UserController(IUserService userService, ITokenHandler tokenHandler)
+        public UserController(IUserService userService, ITokenHandler tokenHandler, IValidator<ChangePasswordInputModel> validator)
         {
             _userService = userService;
             _tokenHandler = tokenHandler;
+            _validator = validator;
         }
 
         [HttpPost]
@@ -33,17 +36,23 @@ namespace IceProducts.Server.Controllers
             return Unauthorized(new BaseResponse(false, "Wrong email or password"));
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordInputModel changePasswordInputModel)
         {
             //validate the new password later
+            var validationResult = await _validator.ValidateAsync(changePasswordInputModel);
 
-            //no need to use HttpContextAccessor there's only one record
-            var user = await _userService.GetFirst();
-            _userService.UpdatePassword(user, changePasswordInputModel.NewPassword);
-            await _userService.Save();
-            return Ok();
+            if (validationResult.IsValid)
+            {
+                //no need to use HttpContextAccessor there's only one record
+                var user = await _userService.GetFirst();
+                _userService.UpdatePassword(user, changePasswordInputModel.NewPassword);
+                await _userService.Save();
+                return Ok();
+            }
+            var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
+            return BadRequest(new BaseResponse(false, errorMessages));
         }
 
 

@@ -1,4 +1,5 @@
-﻿using IceProducts.Server.Services.interfaces;
+﻿using IceProducts.Server.Data;
+using IceProducts.Server.Services.interfaces;
 using IceProducts.Shared.InputModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,16 @@ namespace IceProducts.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Send(ContactUsInputModel contactUsInput)
+        public async Task<IActionResult> Send([FromBody] ContactUsInputModel contactUsInput)
         {
-            await _emailService.SendEmail(contactUsInput);
+            try
+            {
+                await _emailService.SendEmail(contactUsInput);
+            }
+            catch
+            {
+                return BadRequest(new BaseResponse(false, "An error occurred while sending the email, please try again later"));
+            }
             return Ok();
         }
     }

@@ -1,12 +1,15 @@
 ﻿@using IceProducts.Client.Components
+@using IceProducts.Shared.Dtos;
 @inherits LayoutComponentBase
 @inject IJSRuntime _js
 
 
-@*<MudThemeProvider />
+@*
 <MudDialogProvider />
-<MudSnackbarProvider />
 *@
+
+<MudThemeProvider />
+<MudSnackbarProvider />
 
 <MudLayout>
     <NavigationBar></NavigationBar>
@@ -100,32 +103,29 @@
 
         </section>
 
-        <div class="container-fluid" id="products" style="margin-top:-75px;" data-aos="fade-up" >
+        @if (Products != null) 
+        {
+            <div class="container-fluid" id="products" style="margin-top:-75px;" data-aos="fade-up">
 
-                <h2 class="display-4 fw-bold text-center p-2" >
+                <h2 class="display-4 fw-bold text-center p-2">
                     Products
                 </h2>
 
 
-            <div class="d-flex flex-wrap justify-content-center mt-4" data-aos-duration="1200">
-                <FlippingProductCard></FlippingProductCard>
-                <FlippingProductCard></FlippingProductCard>
-                <FlippingProductCard></FlippingProductCard>
-                <FlippingProductCard></FlippingProductCard>
-                <FlippingProductCard></FlippingProductCard>
-                <FlippingProductCard></FlippingProductCard>
-                <FlippingProductCard></FlippingProductCard>
-                <FlippingProductCard></FlippingProductCard>
+                <div class="d-flex flex-wrap justify-content-center mt-4" data-aos-duration="1200">
+                    @foreach (var item in Products)
+                    {
+                        <FlippingProductCard Product="item"></FlippingProductCard>
+                    } 
+                </div>
+
             </div>
 
-        </div>
+        }
 
          <section id="contact" class="contact mt-5">
              <ContactUsForm></ContactUsForm>
          </section>
-
-
-        @Body
     </main>
 
 
@@ -170,11 +170,22 @@
     
 @code{
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    [Inject]
+    public HttpClient HttpRequest { get; set; }
+
+    public IEnumerable<ProductDto>? Products { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
     {
+        string apiPath = "api/product/";
+        var products = await HttpRequest.GetFromJsonAsync<IEnumerable<ProductDto>>(apiPath);
+
+        if (products != null && products.Any())
+        {
+            Products = products.ToList();
+        }
+
         var templateMain = "/template/assets/js/main.js";
         await _js.InvokeVoidAsync("loadJs", templateMain);
-
-
     }
 }

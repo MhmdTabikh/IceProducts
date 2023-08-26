@@ -12,7 +12,7 @@ namespace IceProducts.Shared.InputModels
         [Required]
         public string LongDescription { get; set; }
 
-        public string Sizes { get; set; } = string.Empty;
+        public string Sizes { get; set; }
 
         [Required]
         public IFormFile Image { get; set; }

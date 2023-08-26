@@ -9,9 +9,10 @@ namespace IceProducts.Server.Validators
         {
             RuleFor(x => x.NewPassword).NotNull()
                                        .NotEmpty()
-                                       .MinimumLength(8)
-                                       .Must(HasSpecialChars)
-                                       .WithMessage("Password must contain at least one special character and at least 8 characters lenght");
+                                       .MinimumLength(8);
+
+            RuleFor(x => x.NewPassword).Must(HasSpecialChars)
+                                       .WithMessage("Password must contain at least one special character");
         }       
 
         private bool HasSpecialChars(string newPassword)

@@ -1,4 +1,6 @@
-﻿namespace IceProducts.Server.Data;
+﻿using IceProducts.Shared.InputModels;
+
+namespace IceProducts.Server.Data;
 
 public class TokenResponse : BaseResponse
 {

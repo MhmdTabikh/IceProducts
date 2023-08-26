@@ -233,13 +233,13 @@
         _disableSubmit = true;
         _isLoggingIn = true;
 
-        string apiPath = "api/email/send";
+        string apiPath = "api/user/login";
         var response = await HttpRequest.PostAsJsonAsync(apiPath, UserInput);
 
 
         if (response.IsSuccessStatusCode)
         {
-            // do something
+           
         }
         else
         {
