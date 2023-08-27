@@ -1,4 +1,6 @@
-﻿namespace IceProducts.Server.Validators.ValidationModels
+﻿using IceProducts.Shared.InputModels;
+
+namespace IceProducts.Server.Validators.ValidationModels
 {
     public class ProductValidationModel
     {
@@ -6,6 +8,6 @@
         public string SmallDescription { get; set; }
         public string LongDescription { get; set; }
         public string Sizes { get; set; } = string.Empty;
-        public IFormFile Image { get; set; }
+        public ImageData ImageData { get; set; } 
     }
 }

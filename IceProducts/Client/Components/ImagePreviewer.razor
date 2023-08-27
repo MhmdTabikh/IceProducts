@@ -1,17 +1,18 @@
 ﻿@using IceProducts.Shared.Dtos;
+@using IceProducts.Shared.InputModels;
 <div class="custom-file">
-    <InputFile accept="img/*" class="custom-file-input opacity-0" style="width:0px; height:0px;" id="@BindUploadedImageTo.Id" OnChange="UploadImage"></InputFile>
+    <InputFile accept="img/*" class="custom-file-input opacity-0" style="width:0px; height:0px;" id="@UniqueFileInputId" OnChange="UploadImage"></InputFile>
     <div class="container text-center">
-        <label class="custom-file-label" for="@BindUploadedImageTo.Id">
+        <label class="custom-file-label" for="@UniqueFileInputId">
 
-            @if(BindUploadedImageTo.Image == null)
-            {   
-             <img src="./images/shield.png" width="100"  style="cursor:pointer;" />
+             @if(BindUploadedImageTo.ImageData?.Image == null)
+            {
+              <img src="data:image;base64,@Convert.ToBase64String(OriginalImage)" width="100" style="cursor:pointer;" />
              <span style="color:red;display:block;" hidden="@isErrorHidden">@errorMessage</span>
             }
             else
             {
-                <img src="data:image;base64,@Convert.ToBase64String(BindUploadedImageTo.Image)" class="card-img-top product-img" width="120"  style="cursor:pointer;" />
+                <img src="data:image;base64,@Convert.ToBase64String(BindUploadedImageTo.ImageData.Image)" class="card-img-top product-img" width="120"  style="cursor:pointer;" />
             }
         </label>
     </div>
@@ -36,7 +37,10 @@
     public byte[] OriginalImage { get; set; } = Array.Empty<byte>();
 
     [Parameter]
-    public ProductDto BindUploadedImageTo { get; set; }
+    public UpdateProductInputModel BindUploadedImageTo { get; set; }
+
+    [Parameter]
+    public string UniqueFileInputId { get; set; }
 
     private string errorMessage = "This file is not appropraite";
     private bool isErrorHidden = true;
@@ -48,8 +52,13 @@
         {
             string fileType = importedFile.File.ContentType;
             _isOriginalImageHidden = true;
-            var image = await importedFile.File.RequestImageFileAsync(importedFile.File.ContentType, 500, 500);
-            BindUploadedImageTo.Image = await GetImageAsByteArray(image);
+            var image = await importedFile.File.RequestImageFileAsync(importedFile.File.ContentType, 640,480);
+
+            BindUploadedImageTo.ImageData = new ImageData
+            {
+               Image = await GetImageAsByteArray(image),
+               Format = fileType
+            };
         }
         else
         {

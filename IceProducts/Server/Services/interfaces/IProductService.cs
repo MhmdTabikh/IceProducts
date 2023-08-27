@@ -9,9 +9,9 @@ namespace IceProducts.Server.Services.interfaces
         Task<IEnumerable<ProductDto>> Get();
         Task<Product?> GetById(Guid id);
         Task<ProductDto> GetDtoById(Guid id);
-        Task Update(Product product, UpdateProductInputModel updateProductInput);
+        void Update(Product product, UpdateProductInputModel updateProductInput);
         Task<ProductDto> Add(ProductInputModel productInput);
         void Delete(Product product);
-        Task Save(CancellationToken cancellationToken);
+        Task Save();
     }
 }

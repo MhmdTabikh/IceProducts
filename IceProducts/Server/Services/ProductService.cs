@@ -18,12 +18,11 @@ namespace IceProducts.Server.Services.interfaces
 
         public async Task<ProductDto> Add(ProductInputModel productInput)
         {
-            var productImage = await ImageHandler.GetImageAsBytes(productInput.Image!);
 
             //add the mappers later
             var product = new Product
             {
-                Image = productImage,
+                Image = productInput.ImageData.Image,
                 LongDescription = productInput.LongDescription,
                 SmallDescription = productInput.SmallDescription,
                 Sizes = productInput.Sizes,
@@ -68,7 +67,7 @@ namespace IceProducts.Server.Services.interfaces
             return await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<ProductDto> GetDtoById(Guid id)
+        public async Task<ProductDto?> GetDtoById(Guid id)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
             
@@ -88,17 +87,19 @@ namespace IceProducts.Server.Services.interfaces
             return null;
         }
 
-        public async Task Save(CancellationToken cancellationToken)
+        public async Task Save()
         {
-            await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync();
         }
 
         //change later not efficient (bshuf shu b3ml fiha b3den)
-        public async Task Update(Product product, UpdateProductInputModel updateProductInput)
+        public void Update(Product product, UpdateProductInputModel updateProductInput)
         {
-            var image = await ImageHandler.GetImageAsBytes(updateProductInput.Image);
+            if (updateProductInput.ImageData != null && updateProductInput.ImageData.Image != null && updateProductInput.ImageData.Image.Length > 0)
+            {
+                product.Image = updateProductInput.ImageData.Image;
+            }
 
-            product.Image = image;
             product.Name = updateProductInput.Name;
             product.SmallDescription = updateProductInput.SmallDescription;
             product.LongDescription = updateProductInput.LongDescription;

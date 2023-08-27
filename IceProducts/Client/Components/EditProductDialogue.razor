@@ -1,7 +1,8 @@
 ﻿@using IceProducts.Shared.Dtos;
 @using IceProducts.Shared.InputModels;
 @using Microsoft.AspNetCore.Http;
-<EditForm class="form p-2" Model="TableProduct" OnValidSubmit="Create">
+<EditForm class="form p-2" Model="TableProduct" OnValidSubmit="Update">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
     <MudDialog>
 
         <DialogContent>
@@ -9,17 +10,18 @@
             <div class="container row d-flex justify-content-center align-items-center">
 
                 <div class="col-6">
-                    <ImagePreviewer OriginalImage="TableProduct.Image"  BindUploadedImageTo="TableProduct"></ImagePreviewer>
+                    <ImagePreviewer UniqueFileInputId="TableProduct.Id" OriginalImage="TableProduct.Image"  BindUploadedImageTo="updateProductInput"></ImagePreviewer>
                 </div>
                 <div class="col-6">
-                    <InputText style="outline:none;box-shadow:none;" class="form-control" placeholder="Name" id="name"  @bind-Value="TableProduct.Name"></InputText>
-                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" placeholder="Sizes [Large,small...] " id="sizes" @bind-Value="TableProduct.Sizes"></InputText>
-                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" id="description" @bind-Value="TableProduct.SmallDescription" placeholder="small description"></InputText>
-                    <InputTextArea style="outline:none;box-shadow:none;" rows="5" class="form-control mt-3" id="longdescription" placeholder="detailed description" @bind-Value="TableProduct.LongDescription"></InputTextArea>
+                    <InputText style="outline:none;box-shadow:none;" class="form-control" placeholder="Name" id="name"  @bind-Value="updateProductInput.Name"></InputText>
+                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" placeholder="Sizes [Large,small...] " id="sizes" @bind-Value="updateProductInput.Sizes"></InputText>
+                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" id="description" @bind-Value="updateProductInput.SmallDescription" placeholder="small description"></InputText>
+                    <InputTextArea style="outline:none;box-shadow:none;" rows="5" class="form-control mt-3" id="longdescription" placeholder="detailed description" @bind-Value="updateProductInput.LongDescription"></InputTextArea>
                 </div>
             </div>
            
 
+            <ValidationSummary></ValidationSummary>
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -61,33 +63,59 @@
             "image/x-icon"
             };
 
+    public UpdateProductInputModel updateProductInput { get; set; } = new UpdateProductInputModel();
     private bool _disableSubmit = false;
     private bool _isSaving = false;
 
     private void Cancel() {
         MudDialog.Cancel();
     }
-    private async Task Create()
+
+
+    private async Task Update()
     {
         _disableSubmit = true;
         _isSaving = true;
 
-        string apiPath = "api/product/create";
-        var response = await HttpRequest.PostAsJsonAsync(apiPath, TableProduct);
+        string apiPath = $"api/product";
+        var response = await HttpRequest.PutAsJsonAsync($"{apiPath}/{TableProduct.Id}", updateProductInput);
 
 
         if (response.IsSuccessStatusCode)
         {
-            // do something
-            var productDto = await response.Content.ReadFromJsonAsync<ProductDto>();
-            MudDialog.Close(DialogResult.Ok(new ProductDto()));
+            var returnedProduct = new ProductDto
+            {
+                Id = TableProduct.Id,
+                Name = updateProductInput.Name,
+                LongDescription = updateProductInput.LongDescription,
+                SmallDescription = updateProductInput.SmallDescription
+            };
+
+            if(updateProductInput.ImageData?.Image != null)
+            {
+                returnedProduct.Image = updateProductInput.ImageData.Image;
+            }
+            else
+            {
+                returnedProduct.Image = TableProduct.Image;
+            }
+
+            MudDialog.Close(DialogResult.Ok(returnedProduct));
         }
         else
         {
-            // do something
+            // do something later
         }
-
         _disableSubmit = false;
         _isSaving = false;
+    }
+
+
+    protected override void OnParametersSet()
+    {
+        updateProductInput.Name = TableProduct.Name;
+        updateProductInput.Sizes = TableProduct.Sizes;
+        updateProductInput.SmallDescription = TableProduct.SmallDescription;
+        updateProductInput.LongDescription = TableProduct.LongDescription;
     }
 }

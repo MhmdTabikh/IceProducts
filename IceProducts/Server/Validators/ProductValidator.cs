@@ -34,22 +34,24 @@ namespace IceProducts.Server.Validators
                                            .NotNull()
                                            .MaximumLength(332);
 
-            RuleFor(x => x.Image).NotNull()
-                                 .Must(ValidateFormFileType)
-                                 .WithMessage("Invalid file type");
+            RuleFor(x => x.ImageData.Format).Must(ValidateFormFileType)
+                                            .WithMessage("Invalid file type");
 
-            RuleFor(x => x.Image).Must(ValidateFileSize)
-                                 .WithMessage("Provided file is too large (Maximum 10MB)"); 
+            RuleFor(x => x.ImageData.Image)
+                                           .NotNull()
+                                           .NotEmpty()
+                                           .Must(ValidateFileSize)
+                                           .WithMessage("Provided file is too large (Maximum 10MB)"); 
         }
 
-        private bool ValidateFormFileType(IFormFile formFile)
+        private bool ValidateFormFileType(string fileType)
         {
-            return acceptedExtenstions.Contains(formFile.ContentType);
+            return acceptedExtenstions.Contains(fileType);
         }
 
-        private bool ValidateFileSize(IFormFile formFile)
+        private bool ValidateFileSize(byte[] image)
         {
-            return formFile.Length <= MaxSize;
+            return image.Length <= MaxSize;
         }
 
     } 

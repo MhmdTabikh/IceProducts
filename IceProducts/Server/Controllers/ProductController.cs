@@ -43,30 +43,30 @@ namespace IceProducts.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> Add([FromForm] ProductInputModel productInputModel, CancellationToken cancellationToken)
+        public async Task<ActionResult<ProductDto>> Add([FromBody] ProductInputModel productInputModel)
         {
             // do mappings later
             var validationResult = await _validator.ValidateAsync(new ProductValidationModel
             {
-                Image = productInputModel.Image,
+                ImageData = productInputModel.ImageData,
                 LongDescription = productInputModel.LongDescription,
                 Name = productInputModel.Name,
                 Sizes = productInputModel.Sizes,
                 SmallDescription = productInputModel.SmallDescription
-            }, cancellationToken);
+            });
 
             if(!validationResult.IsValid)
             {
-                var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
+                var errorMessages = string.Join(";", validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
                 return BadRequest(new BaseResponse(false, errorMessages));
             }
             var productDto = await _productService.Add(productInputModel);
-            await _productService.Save(cancellationToken);
-            return Ok(productDto);
+            await _productService.Save();
+            return Ok(productDto);  
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update([FromRoute] Guid id, [FromForm] UpdateProductInputModel updateProductInput, CancellationToken cancellationToken)
+        public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProductInputModel updateProductInput)
         {
             var product = await _productService.GetById(id); 
             if (product == null)
@@ -75,27 +75,28 @@ namespace IceProducts.Server.Controllers
             }
 
             // do mappings later
-            var validationResult = await _validator.ValidateAsync(new ProductValidationModel
-            {
-                Image = updateProductInput.Image,
-                LongDescription = updateProductInput.LongDescription,
-                Name = updateProductInput.Name,
-                Sizes = updateProductInput.Sizes,
-                SmallDescription = updateProductInput.SmallDescription
-            },cancellationToken);
+            //var validationResult = await _validator.ValidateAsync(new ProductValidationModel
+            //{
+            //    ImageData = updateProductInput.ImageData,
+            //    LongDescription = updateProductInput.LongDescription,
+            //    Name = updateProductInput.Name,
+            //    Sizes = updateProductInput.Sizes,
+            //    SmallDescription = updateProductInput.SmallDescription
+            //});
 
-            if (!validationResult.IsValid) 
-            {
-                var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
-                return BadRequest(new BaseResponse(false, errorMessages));
-            }
-            await _productService.Update(product, updateProductInput);
-            await _productService.Save(cancellationToken);
+            //if (!validationResult.IsValid) 
+            //{
+            //    var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
+            //    return BadRequest(new BaseResponse(false, errorMessages));
+            //}
+
+            _productService.Update(product, updateProductInput);
+            await _productService.Save();
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
             var product = await _productService.GetById(id);
 
@@ -105,7 +106,7 @@ namespace IceProducts.Server.Controllers
             }
 
             _productService.Delete(product);
-            await _productService.Save(cancellationToken);
+            await _productService.Save();
             return NoContent();
         }
 
