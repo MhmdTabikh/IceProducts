@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IceProducts.Shared.InputModels
+namespace IceProducts.Shared.Responses
 {
     public class BaseResponse
     {

@@ -1,9 +1,12 @@
-﻿@using IceProducts.Shared.InputModels;
+﻿@using Blazored.LocalStorage;
+@using IceProducts.Shared.InputModels;
+@using IceProducts.Shared.Responses;
+@using System.Net.Http.Headers;
 
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-            <EditForm Model="UserInput" OnValidSubmit="Login" class="login100-form">
+            <EditForm Model="UserInput" OnSubmit="Login" class="login100-form">
 
                 <span class="login100-form-title" style="padding-bottom:26px;font-family:Calibri">
                     Admin Login
@@ -224,6 +227,15 @@
     [Inject]
     public HttpClient HttpRequest { get; set; }
 
+    [Inject]
+    public NavigationManager Navigator { get; set; }
+
+    [Inject]
+    public ILocalStorageService LocalStorage { get; set; }
+
+    [Inject]
+    public ISnackbar Snackbar { get; set; }
+
     private bool _disableSubmit = false;
     private bool _isLoggingIn = false;
 
@@ -236,14 +248,21 @@
         string apiPath = "api/user/login";
         var response = await HttpRequest.PostAsJsonAsync(apiPath, UserInput);
 
-
         if (response.IsSuccessStatusCode)
         {
-           
+            var accessToken = await response.Content.ReadFromJsonAsync<AccessToken>();
+
+            if(accessToken != null)
+            {
+                await LocalStorage.SetItemAsStringAsync("accessToken", accessToken.Token);
+                await LocalStorage.SetItemAsync("accessTokenExpiration", accessToken.Expiration);
+                Navigator.NavigateTo("/admin");
+            }
         }
         else
         {
-            // do something
+            var error = await response.Content.ReadFromJsonAsync<BaseResponse>();
+            Snackbar.Add(error?.Message, Severity.Error);
         }
 
         _disableSubmit = false;

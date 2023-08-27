@@ -1,4 +1,4 @@
-﻿namespace IceProducts.Server.Data;
+﻿namespace IceProducts.Shared.Responses;
 
 
 public class AccessToken

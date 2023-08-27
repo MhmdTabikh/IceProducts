@@ -3,7 +3,7 @@ using IceProducts.Server.Data;
 using IceProducts.Server.Services;
 using IceProducts.Server.Services.interfaces;
 using IceProducts.Shared.InputModels;
-using Microsoft.AspNetCore.Authorization;
+using IceProducts.Shared.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IceProducts.Server.Controllers
@@ -23,8 +23,8 @@ namespace IceProducts.Server.Controllers
             _validator = validator;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<AccessToken>> Login([FromForm] UserInputModel userInput)
+        [HttpPost("login")]
+        public async Task<ActionResult<AccessToken>> Login([FromBody] UserInputModel userInput)
         {
             var user = await _userService.Authorize(userInput);
 

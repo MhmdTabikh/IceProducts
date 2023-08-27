@@ -1,6 +1,7 @@
 ﻿using IceProducts.Server.Data;
 using IceProducts.Server.Entities;
 using IceProducts.Server.Extensions;
+using IceProducts.Shared.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,11 +20,10 @@ public class TokenHandler : ITokenHandler
 {
     private readonly TokenOptions _tokenOptions;
     private readonly SigningConfigurations _signingConfigurations;
-    private readonly IPasswordHasher _passwordHasher;
+    
 
-    public TokenHandler(IOptions<TokenOptions> tokenOptionsSnapshot, SigningConfigurations signingConfigurations, IPasswordHasher passwordHaser)
+    public TokenHandler(IOptions<TokenOptions> tokenOptionsSnapshot, SigningConfigurations signingConfigurations)
     {
-        _passwordHasher = passwordHaser;
         _tokenOptions = tokenOptionsSnapshot.Value;
         _signingConfigurations = signingConfigurations;
     }
