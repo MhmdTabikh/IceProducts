@@ -22,21 +22,22 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(buil
 {
     optionsBuilder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(35), null);
 }));
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
-
 builder.Services.AddSingleton(builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 builder.Services.AddScoped<IEmailService, EmailService>();
-
 builder.Services.AddScoped<IValidator<ChangePasswordInputModel>, PasswordValidator>();
 builder.Services.AddScoped<IValidator<ProductValidationModel>, ProductValidator>();
-
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -54,14 +55,16 @@ else
 
 
 
-  
 
 app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
+
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 app.MapRazorPages();

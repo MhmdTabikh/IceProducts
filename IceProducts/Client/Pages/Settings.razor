@@ -1,49 +1,11 @@
 ﻿@page "/settings"
+@using IceProducts.Client.Components
 @using IceProducts.Shared.InputModels;
+@using Microsoft.AspNetCore.Authorization;
 @layout AdminLayout
+@attribute [Authorize]
 
-
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-login100">
-            <EditForm Model="ChangePasswordInputModel" class="login100-form">
-
-                <span class="login100-form-title" style="padding-bottom:26px;font-family:Calibri">
-                    Change Password
-                </span>
-
-                <span class="login100-form-title" style="padding-bottom:48px;">
-                    <i class="bi bi-eye" style="width: 112px;"></i>
-                </span>
-
-                <div class="form-group mt-2">
-                    <span><i class="bi bi-lock"></i></span>
-                    <InputText @bind-Value="ChangePasswordInputModel.NewPassword" type="password" class="form-field" placeholder="New Password" style="outline:none;"></InputText>
-                </div>
-
-                <div class="form-group mt-2">
-                    <span><i class="bi bi-lock"></i></span>
-                    <InputText @bind-Value="_confirmPassword" class="form-field" placeholder="Confirm Password" style="outline:none;"></InputText>
-                </div>
-
-
-
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-dark" style="padding:8px 35px;box-shadow:none;" disabled="@_isLoggingIn">
-                        @if (_isLoggingIn)
-                        {
-                            <span class="simple-loader"></span>
-                        }
-                        else
-                        {
-                            <span>Save</span>
-                        }
-                    </button>
-                </div>
-            </EditForm>
-        </div>
-    </div>
-</div>
+<ChangePasswordForm ChangePasswordModel="ChangePasswordInputModel"></ChangePasswordForm>
 
 <style>
 
@@ -150,6 +112,8 @@
     }
 
 
+
+
     .limiter {
         width: 100%;
         margin: 0 auto;
@@ -222,9 +186,5 @@
 
 @code {
     public ChangePasswordInputModel ChangePasswordInputModel { get; set; } = new ChangePasswordInputModel();
-
-    private string _confirmPassword;
-    private bool _disableSubmit = false;
-    private bool _isLoggingIn = false;
 
 }

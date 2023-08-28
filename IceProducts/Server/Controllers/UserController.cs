@@ -4,6 +4,7 @@ using IceProducts.Server.Services;
 using IceProducts.Server.Services.interfaces;
 using IceProducts.Shared.InputModels;
 using IceProducts.Shared.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IceProducts.Server.Controllers
@@ -36,9 +37,9 @@ namespace IceProducts.Server.Controllers
             return Unauthorized(new BaseResponse(false, "Wrong email or password"));
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("changePassword")]
-        public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordInputModel changePasswordInputModel)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordInputModel changePasswordInputModel)
         {
             //validate the new password later
             var validationResult = await _validator.ValidateAsync(changePasswordInputModel);

@@ -1,6 +1,8 @@
-﻿@using IceProducts.Shared.Dtos;
+﻿@using Blazored.LocalStorage;
+@using IceProducts.Shared.Dtos;
 @using IceProducts.Shared.InputModels;
 @using Microsoft.AspNetCore.Http;
+@using System.Net.Http.Headers;
 <EditForm class="form p-2" Model="TableProduct" OnValidSubmit="Update">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <MudDialog>
@@ -49,6 +51,9 @@
 
     [Inject] public HttpClient HttpRequest { get; set; }
 
+    [Inject]
+    public ILocalStorageService LocalStorage { get; set; }
+
     private static readonly HashSet<string> acceptedExtenstions =
     new HashSet<string> {
             "image/apng",
@@ -76,6 +81,7 @@
     {
         _disableSubmit = true;
         _isSaving = true;
+        HttpRequest.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await LocalStorage.GetItemAsStringAsync("accessToken"));
 
         string apiPath = $"api/product";
         var response = await HttpRequest.PutAsJsonAsync($"{apiPath}/{TableProduct.Id}", updateProductInput);

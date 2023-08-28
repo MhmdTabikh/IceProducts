@@ -1,7 +1,9 @@
 ﻿@using Blazored.LocalStorage;
+@using IceProducts.Client.Classes;
 @using IceProducts.Shared.InputModels;
 @using IceProducts.Shared.Responses;
 @using System.Net.Http.Headers;
+@using Microsoft.AspNetCore.Components.Authorization;
 
 <div class="limiter">
     <div class="container-login100">
@@ -231,6 +233,9 @@
     public NavigationManager Navigator { get; set; }
 
     [Inject]
+    public AuthenticationStateProvider? AuthenticationState { get; set; }
+
+    [Inject]
     public ILocalStorageService LocalStorage { get; set; }
 
     [Inject]
@@ -245,6 +250,7 @@
         _disableSubmit = true;
         _isLoggingIn = true;
 
+
         string apiPath = "api/user/login";
         var response = await HttpRequest.PostAsJsonAsync(apiPath, UserInput);
 
@@ -254,6 +260,7 @@
 
             if(accessToken != null)
             {
+
                 await LocalStorage.SetItemAsStringAsync("accessToken", accessToken.Token);
                 await LocalStorage.SetItemAsync("accessTokenExpiration", accessToken.Expiration);
                 Navigator.NavigateTo("/admin");
@@ -264,6 +271,11 @@
             var error = await response.Content.ReadFromJsonAsync<BaseResponse>();
             Snackbar.Add(error?.Message, Severity.Error);
         }
+
+        var customAuthProvider = (CustomAuthenticationStateProvider?)AuthenticationState;
+
+        //change the state of the application (modify the authentication state )
+        customAuthProvider?.NotifyStateChanged();
 
         _disableSubmit = false;
         _isLoggingIn = false;

@@ -1,18 +1,30 @@
 ﻿@page "/admin"
+@using Blazored.LocalStorage;
+@using IceProducts.Client.Classes;
 @using IceProducts.Client.Components
 @using IceProducts.Shared.Dtos;
 @using IceProducts.Shared.InputModels;
+@using System.Net.Http.Headers;
+@using Microsoft.AspNetCore.Components.Authorization;
 @inject IDialogService Dialog
 @layout AdminLayout
 
 
 
-
-<MudIconButton OnClick="@((e) => OpenDialog(maxWidth))" Icon="@Icons.Material.Filled.Add" Style="border-radius:50%; position:fixed; bottom:0; right:0; padding:10px; margin:20px;" Variant="Variant.Filled" Color="Color.Default" Size="Size.Large" />
-@if(Products != null)
-{
-    <Table Products="Products"></Table>    
-}
+<AuthorizeView>
+    <Authorized>
+        <MudIconButton OnClick="@((e) => OpenDialog(maxWidth))" Icon="@Icons.Material.Filled.Add" Style="border-radius:50%; position:fixed; bottom:0; right:0; padding:10px; margin:20px;" Variant="Variant.Filled" Color="Color.Default" Size="Size.Large" />
+        @if (Products != null)
+        {
+            <Table Products="Products"></Table>
+        }
+    </Authorized>
+   <NotAuthorized>
+       <div style="width:100%; height:100%">
+           <img src="../wwwroot/notAuth.png" alt="notAuth" />
+       </div>
+   </NotAuthorized>
+</AuthorizeView>
 
 @code {
     public ProductInputModel DialogProduct { get; set; } = new ProductInputModel();
@@ -24,6 +36,11 @@
     [Inject]
     public HttpClient HttpRequest { get; set; }
 
+    [Inject]
+    public ILocalStorageService LocalStorage { get; set; }
+
+    [CascadingParameter]
+    public Task<AuthenticationState?>? authenticationState { get; set; }
 
 
     private async Task OpenDialog(DialogOptions options)
@@ -40,17 +57,24 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        string apiPath = "api/product/";
-        var products = await HttpRequest.GetFromJsonAsync<IEnumerable<ProductDto>>(apiPath);
+        var state = await authenticationState;
 
-        if(products != null)
+        if(state != null)
         {
-            Products = products.ToHashSet();
-        }else
-        {
-            Products = new HashSet<ProductDto>();
+            var token = await LocalStorage.GetItemAsStringAsync("accessToken");
+            HttpRequest.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string apiPath = "api/product/";
+            var products = await HttpRequest.GetFromJsonAsync<IEnumerable<ProductDto>>(apiPath);
+            if (products != null)
+            {
+                Products = products.ToHashSet();
+            }
+            else
+            {
+                Products = new HashSet<ProductDto>();
+            }
         }
     }
-
 
 }

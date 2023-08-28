@@ -5,12 +5,14 @@ using IceProducts.Server.Validators.ValidationModels;
 using IceProducts.Shared.Dtos;
 using IceProducts.Shared.InputModels;
 using IceProducts.Shared.Responses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IceProducts.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -74,21 +76,7 @@ namespace IceProducts.Server.Controllers
                 return BadRequest(new BaseResponse (false, $"Product with Id {id} doesn't exist"));
             }
 
-            // do mappings later
-            //var validationResult = await _validator.ValidateAsync(new ProductValidationModel
-            //{
-            //    ImageData = updateProductInput.ImageData,
-            //    LongDescription = updateProductInput.LongDescription,
-            //    Name = updateProductInput.Name,
-            //    Sizes = updateProductInput.Sizes,
-            //    SmallDescription = updateProductInput.SmallDescription
-            //});
-
-            //if (!validationResult.IsValid) 
-            //{
-            //    var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
-            //    return BadRequest(new BaseResponse(false, errorMessages));
-            //}
+            //validations go here
 
             _productService.Update(product, updateProductInput);
             await _productService.Save();
