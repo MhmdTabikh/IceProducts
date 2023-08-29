@@ -1,5 +1,7 @@
-﻿@using IceProducts.Shared.Dtos;
+﻿@using Blazored.LocalStorage;
+@using IceProducts.Shared.Dtos;
 @using IceProducts.Shared.InputModels;
+@using System.Net.Http.Headers;
 @inject IDialogService Dialog
 
 <div class="main-content">
@@ -81,6 +83,9 @@
     [Inject]
     public HttpClient HttpRequest { get; set; }
 
+    [Inject]
+    public ILocalStorageService LocalStorage { get; set; }
+
     private async Task Delete(ProductDto selected)
     {
         string apiPath = "api/product";
@@ -124,4 +129,9 @@
     }
 
 
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await LocalStorage.GetItemAsStringAsync("accessToken");
+        HttpRequest.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    }
 }                                            

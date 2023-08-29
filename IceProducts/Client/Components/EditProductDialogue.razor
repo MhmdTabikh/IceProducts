@@ -51,9 +51,7 @@
 
     [Inject] public HttpClient HttpRequest { get; set; }
 
-    [Inject]
-    public ILocalStorageService LocalStorage { get; set; }
-
+    
     private static readonly HashSet<string> acceptedExtenstions =
     new HashSet<string> {
             "image/apng",
@@ -81,7 +79,6 @@
     {
         _disableSubmit = true;
         _isSaving = true;
-        HttpRequest.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await LocalStorage.GetItemAsStringAsync("accessToken"));
 
         string apiPath = $"api/product";
         var response = await HttpRequest.PutAsJsonAsync($"{apiPath}/{TableProduct.Id}", updateProductInput);

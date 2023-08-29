@@ -36,9 +36,8 @@ namespace IceProducts.Client.Classes
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
-        public async Task RemoveAuthenticationStateAsync(string key)
+        public void RemoveAuthenticationState()
         {
-            await _localStorage.RemoveItemAsync(key);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 

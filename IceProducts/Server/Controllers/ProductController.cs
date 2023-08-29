@@ -12,7 +12,6 @@ namespace IceProducts.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -31,6 +30,7 @@ namespace IceProducts.Server.Controllers
             return Ok(productDtos);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> Get(Guid id)
         {
@@ -43,7 +43,8 @@ namespace IceProducts.Server.Controllers
 
             return Ok(productDto);
         }
-
+        
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<ProductDto>> Add([FromBody] ProductInputModel productInputModel)
         {
@@ -67,6 +68,7 @@ namespace IceProducts.Server.Controllers
             return Ok(productDto);  
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProductInputModel updateProductInput)
         {
@@ -83,6 +85,7 @@ namespace IceProducts.Server.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {

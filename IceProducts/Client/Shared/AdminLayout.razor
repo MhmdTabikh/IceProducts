@@ -1,36 +1,49 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using Blazored.LocalStorage;
+@using IceProducts.Client.Classes;
+@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
 
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
+<AuthorizeView>
+    <Authorized>
+        <MudLayout>
+            <MudDrawer Class="bg-dark" @bind-Open="@open" ClipMode="clipMode" Breakpoint="@breakpoint" OpenMiniOnHover="true" Elevation="1" Variant="@DrawerVariant.Mini">
+
+                <MudNavMenu Class="pt-2">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <MudIcon Icon="@Icons.Material.Rounded.Person" Color="Color.Primary"></MudIcon>
+                        @if (open)
+                        {
+                            <span class="ms-2 text-white">Welcome!</span>
+                        }
+                    </div>
+                </MudNavMenu>
+
+                <MudNavMenu Class="mt-auto pb-3">
+                    <MudNavLink Href="/Admin" Match="NavLinkMatch.All" ActiveClass="active-link" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+                    <MudNavLink Href="/Settings" Match="NavLinkMatch.All" ActiveClass="active-link" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
+                    <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Rounded.Logout" OnClick="Logout" IconColor="Color.Default">Logout</MudNavLink>
+                </MudNavMenu>
+            </MudDrawer>
+
+            <MudMainContent Class="pt-16 px-16">
+                @Body
+            </MudMainContent>
+        </MudLayout>
+    </Authorized>
+
+    <NotAuthorized>
+        <div style="display:flex;justify-content:center;align-items:center;background-color:white">
+            <img src="./notAuth.png" alt="notAuth" style="width:50%;height:50%" />
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
 
 
-<MudLayout>
-    <MudDrawer Class="bg-dark" @bind-Open="@open" ClipMode="clipMode" Breakpoint="@breakpoint" OpenMiniOnHover="true" Elevation="1" Variant="@DrawerVariant.Mini">
 
-        <MudNavMenu Class="pt-2">
-            <div class="d-flex align-items-center justify-content-center">
-            <MudIcon Icon="@Icons.Material.Rounded.Person" Color="Color.Primary"></MudIcon>
-            @if (open)
-            {
-                <span class="ms-2 text-white">Welcome!</span>
-            }
-            </div>
-        </MudNavMenu>
-
-        <MudNavMenu Class="mt-auto pb-3">
-            <MudNavLink Href="/Admin" Match="NavLinkMatch.All" ActiveClass="active-link" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-            <MudNavLink Href="/Settings" Match="NavLinkMatch.All" ActiveClass="active-link" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
-            <MudNavLink Match="NavLinkMatch.All"  Icon="@Icons.Material.Rounded.Logout" IconColor="Color.Default">Logout</MudNavLink>
-        </MudNavMenu>
-    </MudDrawer>
-
-    <MudMainContent Class="pt-16 px-16">
-        @Body
-    </MudMainContent>
-</MudLayout>
 
 
 <style>
@@ -494,9 +507,30 @@
     Breakpoint breakpoint = Breakpoint.Lg;
     DrawerClipMode clipMode = DrawerClipMode.Never;
 
+    [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    [Inject]
+    public ILocalStorageService LocalStorage { get; set; }
+
+    [Inject]
+    public NavigationManager Navigator { get; set; }
+
+    async Task Logout()
+    {
+        IEnumerable<string> keys = new string[] { "accessToken", "accessTokenExpiration" };
+        await LocalStorage.RemoveItemsAsync(keys);
+
+        var customAuthState = (CustomAuthenticationStateProvider) AuthenticationStateProvider;
+        customAuthState.RemoveAuthenticationState();
+        Navigator.NavigateTo("/login");
+    }
+
     void ToggleDrawer()
     {
         open = !open;
     }
 
+
+ 
 }

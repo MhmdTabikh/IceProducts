@@ -2,10 +2,14 @@
 @using IceProducts.Client.Components
 @using IceProducts.Shared.InputModels;
 @using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization
 @layout AdminLayout
-@attribute [Authorize]
 
-<ChangePasswordForm ChangePasswordModel="ChangePasswordInputModel"></ChangePasswordForm>
+<AuthorizeView>
+<Authorized>
+    <ChangePasswordForm ChangePasswordModel="ChangePasswordInputModel"></ChangePasswordForm>
+</Authorized>
+</AuthorizeView>
 
 <style>
 
