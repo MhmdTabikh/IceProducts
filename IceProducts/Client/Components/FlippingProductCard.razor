@@ -13,7 +13,7 @@
                     <p class="card-text">@Product.SmallDescription</p>
                 </div>
                 <div class="card-footer bg-light">
-                    <button class="btn text-dark fw-bold btn-outline-light w-100">
+                    <button class="btn text-dark fw-bold btn-outline-light w-100" style="box-shadow:none; outline:none;">
                         view more
                     </button>
                 </div>
@@ -32,8 +32,8 @@
                     </div>
 
                     <div class="card-body">
-                        <button class="btn text-dark fw-bold btn-outline-light bg-light  w-100 text-center" disabled>available sizes</button>
-                        <p class="card-text p-2">@Product.Sizes Large small medium</p>
+                        <button class="btn text-dark fw-bold btn-outline-light bg-light  w-100 text-center"  disabled>available sizes</button>
+                        <p class="card-text p-2">@Product.Sizes</p>
                     </div>
                 </div>
             </div>
@@ -127,6 +127,13 @@
         font-family: Nunito Sans;
     }
 
+
+        @@media (min-width: 768px) {
+        /* Apply styles to hide the button on screens larger than 767px width */
+        .view-more-button {
+            display: none;
+        }
+    }
 </style>
 
 
@@ -134,4 +141,5 @@
 @code {
     [Parameter]
     public ProductDto Product { get; set; } = new ProductDto();
+
 }

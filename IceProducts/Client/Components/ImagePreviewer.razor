@@ -7,8 +7,9 @@
 
              @if(BindUploadedImageTo.ImageData?.Image == null)
             {
-              <img src="data:image;base64,@Convert.ToBase64String(OriginalImage)" width="100" style="cursor:pointer;" />
-             <span style="color:red;display:block;" hidden="@isErrorHidden">@errorMessage</span>
+              <img src="data:image;base64,@Convert.ToBase64String(OriginalImage)" width="250" style="cursor:pointer; border-radius:5px;"  />
+              <br />
+             <span class="text-danger" hidden="@isErrorHidden">@errorMessage</span>
             }
             else
             {
@@ -42,23 +43,48 @@
     [Parameter]
     public string UniqueFileInputId { get; set; }
 
+
+    private static readonly HashSet<string> acceptedExtenstions =
+    new HashSet<string> {
+            "image/apng",
+            "image/bmp",
+            "image/gif",
+            "image/jpeg",
+            "image/pjpeg",
+            "image/png",
+            "image/svg+xml",
+            "image/tiff",
+            "image/webp",
+            "image/x-icon"
+                    };
+
     private string errorMessage = "This file is not appropraite";
     private bool isErrorHidden = true;
     private bool _isOriginalImageHidden = false;
 
     public async Task UploadImage(InputFileChangeEventArgs importedFile)
     {
+        isErrorHidden = true;
+
         if ((importedFile.File != null))
         {
             string fileType = importedFile.File.ContentType;
-            _isOriginalImageHidden = true;
-            var image = await importedFile.File.RequestImageFileAsync(importedFile.File.ContentType, 640,480);
 
-            BindUploadedImageTo.ImageData = new ImageData
+            if(acceptedExtenstions.Contains(fileType))
             {
-               Image = await GetImageAsByteArray(image),
-               Format = fileType
-            };
+                _isOriginalImageHidden = true;
+                var image = await importedFile.File.RequestImageFileAsync(importedFile.File.ContentType, 640, 480);
+
+                BindUploadedImageTo.ImageData = new ImageData
+                {
+                    Image = await GetImageAsByteArray(image),
+                    Format = fileType
+                };
+            }
+            else
+            {
+                isErrorHidden = false;
+            }
         }
         else
         {

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using IceProducts.Server.Data;
 using IceProducts.Server.Services.interfaces;
 using IceProducts.Server.Validators.ValidationModels;
 using IceProducts.Shared.Dtos;
@@ -60,7 +59,7 @@ namespace IceProducts.Server.Controllers
 
             if(!validationResult.IsValid)
             {
-                var errorMessages = string.Join(";", validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
+                var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
                 return BadRequest(new BaseResponse(false, errorMessages));
             }
             var productDto = await _productService.Add(productInputModel);
@@ -78,7 +77,20 @@ namespace IceProducts.Server.Controllers
                 return BadRequest(new BaseResponse (false, $"Product with Id {id} doesn't exist"));
             }
 
-            //validations go here
+            var validationResult = await _validator.ValidateAsync(new ProductValidationModel
+            {
+                ImageData = updateProductInput.ImageData ?? null,
+                LongDescription = updateProductInput.LongDescription,
+                Name = updateProductInput.Name,
+                Sizes = updateProductInput.Sizes,
+                SmallDescription = updateProductInput.SmallDescription
+            });
+
+            if(!validationResult.IsValid)
+            {
+                var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
+                return BadRequest(new BaseResponse(false, errorMessages));
+            }
 
             _productService.Update(product, updateProductInput);
             await _productService.Save();

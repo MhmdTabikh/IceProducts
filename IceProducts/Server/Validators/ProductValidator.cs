@@ -3,7 +3,7 @@ using IceProducts.Server.Validators.ValidationModels;
 
 namespace IceProducts.Server.Validators
 {
-    public class ProductValidator : AbstractValidator<ProductValidationModel>
+    public class ProductValidator : AbstractValidator<ProductValidationModel> 
     {
         //~ 10MB
         private const long MaxSize = 10000000; 
@@ -23,9 +23,10 @@ namespace IceProducts.Server.Validators
 
         public ProductValidator() 
         {
+
             RuleFor(x => x.Name).NotNull()
                                 .NotEmpty();
-            
+
             RuleFor(x => x.SmallDescription).NotEmpty()
                                             .NotNull()
                                             .MaximumLength(75);
@@ -34,14 +35,17 @@ namespace IceProducts.Server.Validators
                                            .NotNull()
                                            .MaximumLength(332);
 
-            RuleFor(x => x.ImageData.Format).Must(ValidateFormFileType)
-                                            .WithMessage("Invalid file type");
+            When(x => x.ImageData != null, () =>
+            {
+                RuleFor(x => x.ImageData.Format).Must(ValidateFormFileType)
+                                                .WithMessage("Invalid file type");
 
-            RuleFor(x => x.ImageData.Image)
-                                           .NotNull()
-                                           .NotEmpty()
-                                           .Must(ValidateFileSize)
-                                           .WithMessage("Provided file is too large (Maximum 10MB)"); 
+                RuleFor(x => x.ImageData.Image)
+                                                .NotNull()
+                                                .NotEmpty()
+                                                .Must(ValidateFileSize)
+                                                .WithMessage("Provided file is too large (Maximum 10MB)");
+            });
         }
 
         private bool ValidateFormFileType(string fileType)

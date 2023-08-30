@@ -3,27 +3,28 @@
 @using IceProducts.Shared.InputModels;
 @using Microsoft.AspNetCore.Http;
 @using System.Net.Http.Headers;
-<EditForm class="form p-2" Model="TableProduct" OnValidSubmit="Update">
-    <DataAnnotationsValidator></DataAnnotationsValidator>
+<EditForm class="form p-2" Model="TableProduct" OnSubmit="Update" >
     <MudDialog>
 
         <DialogContent>
 
-            <div class="container row d-flex justify-content-center align-items-center">
+            <div class="row d-flex justify-content-center align-items-center">
 
                 <div class="col-6">
                     <ImagePreviewer UniqueFileInputId="TableProduct.Id" OriginalImage="TableProduct.Image"  BindUploadedImageTo="updateProductInput"></ImagePreviewer>
                 </div>
                 <div class="col-6">
-                    <InputText style="outline:none;box-shadow:none;" class="form-control" placeholder="Name" id="name"  @bind-Value="updateProductInput.Name"></InputText>
-                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" placeholder="Sizes [Large,small...] " id="sizes" @bind-Value="updateProductInput.Sizes"></InputText>
-                    <InputText style="outline:none;box-shadow:none;" class="form-control mt-3" id="description" @bind-Value="updateProductInput.SmallDescription" placeholder="small description"></InputText>
-                    <InputTextArea style="outline:none;box-shadow:none;" rows="5" class="form-control mt-3" id="longdescription" placeholder="detailed description" @bind-Value="updateProductInput.LongDescription"></InputTextArea>
+                     <MudTextField T="string" HelperText="Name" Variant="Variant.Text"  id="name" @bind-Value="updateProductInput.Name" Required></MudTextField>
+                     <MudTextField T="string" HelperText="Sizes" Variant="Variant.Text"  id="sizes" @bind-Value="updateProductInput.Sizes" Required></MudTextField>
+                     <MudTextField T="string" HelperText="Small description" Variant="Variant.Text" Immediate="true" id="description" MaxLength="75" Counter="75" @bind-Value="updateProductInput.SmallDescription"  Required></MudTextField>
+                     <MudTextField T="string" HelperText="Detaile description" Variant="Variant.Outlined" Immediate="true" Lines="3" MaxLength="332" Counter="332" id="longdescription"  @bind-Value="updateProductInput.LongDescription"></MudTextField>
                 </div>
             </div>
            
+            <div class="row">
 
-            <ValidationSummary></ValidationSummary>
+            </div>
+
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -91,7 +92,8 @@
                 Id = TableProduct.Id,
                 Name = updateProductInput.Name,
                 LongDescription = updateProductInput.LongDescription,
-                SmallDescription = updateProductInput.SmallDescription
+                SmallDescription = updateProductInput.SmallDescription,
+                Sizes = updateProductInput.Sizes
             };
 
             if(updateProductInput.ImageData?.Image != null)

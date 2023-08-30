@@ -4,30 +4,29 @@
 @using IceProducts.Shared.Responses;
 @using Microsoft.AspNetCore.Http;
 @using System.Net.Http.Headers;
-<EditForm class="form p-2" Model="Product" OnValidSubmit="Create">
+<EditForm class="form p-2" Model="Product" OnSubmit="Create" >
 <MudDialog>
-    
+
     <DialogContent>
 
         <div style="text-align: center; padding: 20px;">
             <h3 style="margin: 0;">Add Product</h3>
         </div>
-            <InputText style="outline:none;box-shadow:none;" class="form-control p-2" placeholder="Name" id="name" @bind-Value="Product.Name"></InputText>
-            <InputText style="outline:none;box-shadow:none;" class="form-control p-2 mt-3" placeholder="Sizes (small,large...) " id="sizes" @bind-Value="Product.Sizes"></InputText>
-            <InputText style="outline:none;box-shadow:none;" class="form-control p-2 mt-3" id="description" @bind-Value="Product.SmallDescription" placeholder="small description"></InputText>
-            <InputTextArea style="outline:none;box-shadow:none;" class="form-control p-2 mt-3" id="longdescription" placeholder="detailed description" @bind-Value="Product.LongDescription"></InputTextArea>
-
-            <InputFile OnChange="HandleOnChange" class="form-control mt-3" id="image"></InputFile>
-           
-            @if (errorMessages != null)
+            <MudTextField T="string" Variant="Variant.Outlined" placeholder="Name" id="name" @bind-Value="Product.Name" Required></MudTextField>
+             <MudTextField T="string" placeholder="Sizes (small,large...) " id="sizes" @bind-Value="Product.Sizes"  Required Variant="Variant.Outlined"></MudTextField>
+            <MudTextField T="string" id="description" @bind-Value="Product.SmallDescription" MaxLength="75" Counter="75" placeholder="small description"  Immediate="true" Variant="Variant.Outlined" Required></MudTextField>
+            @if (fieldErrors.ContainsKey("SmallDescription"))
             {
-                <ul>
-                     @* @foreach (var errorMessage in errorMessages) *@
-                    {
-                        <li></li>
-                    }
-                </ul>
+                <div class="text-danger">@fieldErrors["SmallDescription"]</div>
             }
+            <MudTextField T="string" id="longdescription" Lines="3" placeholder="detailed description" Immediate="true" @bind-Value="Product.LongDescription" MaxLength="332" Counter="332" Variant="Variant.Outlined" Required></MudTextField>
+            @if (fieldErrors.ContainsKey("LongDescription"))
+            {
+                <div class="text-danger">@fieldErrors["LongDescription"]</div>
+            }
+            
+            <InputFile OnChange="HandleOnChange" class="form-control mt-3" id="image" required></InputFile>
+            <span class="m-1 text-danger">@fileTypeError</span>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -51,8 +50,6 @@
     [Parameter] public HashSet<ProductDto> TableProducts { get; set; } = new HashSet<ProductDto>(); 
     [Inject] public HttpClient HttpRequest { get; set; }
 
-    [Inject]
-    public ILocalStorageService LocalStorage { get; set; }
 
     private ProductInputModel Product { get; set; } = new ProductInputModel();
     private static readonly HashSet<string> acceptedExtenstions =
@@ -68,7 +65,8 @@
             "image/webp",
             "image/x-icon"};
 
-    private string[] errorMessages;
+    private string fileTypeError = string.Empty;
+    private Dictionary<string, string> fieldErrors = new Dictionary<string, string>();
 
     private bool _disableSubmit = false;
     private bool _isSaving = false;
@@ -84,8 +82,6 @@
         _disableSubmit = true;
         _isSaving = true;
 
-        HttpRequest.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await LocalStorage.GetItemAsStringAsync("accessToken"));
-
         string apiPath = "api/product";
         var response = await HttpRequest.PostAsJsonAsync(apiPath, Product);
 
@@ -99,13 +95,24 @@
         }
         else
         {
+            fieldErrors.Clear();
             //display errors
             var errorResponse = await response.Content.ReadFromJsonAsync<BaseResponse>();
 
             if (errorResponse != null && !string.IsNullOrEmpty(errorResponse.Message))
             {
-                errorMessages = errorResponse.Message.Split(';');
-                Console.WriteLine(errorMessages.ToString());
+                var errorMessages = errorResponse.Message.Split(Environment.NewLine);
+
+                foreach (var error in errorMessages)
+                {
+                    var parts = error.Split(':');
+                    if (parts.Length == 2)
+                    {
+                        var fieldName = parts[0].Trim();
+                        var errorMessage = parts[1].Trim();
+                        fieldErrors[fieldName] = errorMessage;
+                    }
+                }
             }
         }
 
@@ -115,6 +122,8 @@
 
     private async Task HandleOnChange(InputFileChangeEventArgs e)
     {
+        fileTypeError = string.Empty;
+
         if(e.File != null)
         {
             var format = e.File.ContentType;
@@ -126,6 +135,10 @@
                 var resizedBrowserFile = await e.File.RequestImageFileAsync(format, maxWidth, maxheight);
                 Product.ImageData.Format = format;
                 Product.ImageData.Image = await GetImageAsBytes(resizedBrowserFile);
+            }
+            else
+            {
+                fileTypeError = "file type not supported";
             }
         }
     }

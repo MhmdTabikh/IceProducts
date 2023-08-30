@@ -7,18 +7,21 @@ namespace IceProducts.Server.Validators
     {
         public PasswordValidator()
         {
+
             RuleFor(x => x.NewPassword).NotNull()
                                        .NotEmpty()
-                                       .MinimumLength(8);
+                                       .WithMessage("Cannot be empty")
+                                       .MinimumLength(8)
+                                       .WithMessage("must be at least 8 characters");
 
             RuleFor(x => x.NewPassword).Must(HasSpecialChars)
-                                       .WithMessage("Password must contain at least one special character");
+                                       .WithMessage("must contain at least one special character");
         }       
 
         private bool HasSpecialChars(string newPassword)
         {
             string specialCharacters = "!@#$%^&*()_+-=[]{};':\"|,.<>/?";
-            return newPassword.Any(x => specialCharacters.Contains(x));
+            return newPassword.Any(c => specialCharacters.IndexOf(c) != -1);
         } 
 
     }
