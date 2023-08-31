@@ -6,6 +6,7 @@ using IceProducts.Shared.InputModels;
 using IceProducts.Shared.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace IceProducts.Server.Controllers
 {
@@ -46,8 +47,10 @@ namespace IceProducts.Server.Controllers
 
             if (validationResult.IsValid)
             {
-                //no need to use HttpContextAccessor there's only one record
-                var user = await _userService.GetFirst();
+                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                var userId = Guid.Parse(userIdClaim.Value);
+
+                var user = await _userService.GetById(userId);
                 _userService.UpdatePassword(user, changePasswordInputModel.NewPassword);
                 await _userService.Save();
                 return Ok();
@@ -55,7 +58,5 @@ namespace IceProducts.Server.Controllers
             var errorMessages = string.Join(Environment.NewLine, validationResult.Errors.Select(error => $"{error.PropertyName}: {error.ErrorMessage}"));
             return BadRequest(new BaseResponse(false, errorMessages));
         }
-
-
     }
 }

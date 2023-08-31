@@ -23,6 +23,11 @@ namespace IceProducts.Server.Services
             return queryable.FirstOrDefault(x => x.Email == userInputModel.Email && _passwordHasher.PasswordMatches(userInputModel.Password,x.Password));
         }
 
+        public Task<User?> GetById(Guid id)
+        {
+            return _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<User?> GetFirst()
         {
             return await _context.Users.FirstOrDefaultAsync();

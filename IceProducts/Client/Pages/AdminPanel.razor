@@ -6,6 +6,7 @@
 @using IceProducts.Shared.Dtos;
 @using IceProducts.Shared.InputModels;
 @using System.Net.Http.Headers;
+@using IceProducts.Shared.Responses;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
 @inject IDialogService Dialog
@@ -31,20 +32,16 @@
    </AuthorizeView>
 
 @code {
+    [CascadingParameter] public Task<AuthenticationState> authenticationState { get; set; }
+
+    [Inject] HttpClient HttpRequest { get; set; }
+    [Inject] ILocalStorageService LocalStorage { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+
     public ProductInputModel DialogProduct { get; set; } = new ProductInputModel();
-
     DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.Small, FullWidth = false };
-
     public HashSet<ProductDto>? Products { get; set; } = null;
 
-    [Inject]
-    public HttpClient HttpRequest { get; set; }
-
-    [Inject]
-    public ILocalStorageService LocalStorage { get; set; }
-
-    [CascadingParameter]
-    public Task<AuthenticationState?>? authenticationState { get; set; }
 
     private async Task OpenDialog(DialogOptions options)
     {
@@ -58,14 +55,15 @@
             Products?.Add(result);
         }
     }
+
+
     protected override async Task OnInitializedAsync()
     {
         var state = await authenticationState;
 
         if(state != null)
         {
-            var token = await LocalStorage.GetItemAsStringAsync("accessToken");
-
+            await CheckAccessTokenExpiration();
             string apiPath = "api/product/";
             var products = await HttpRequest.GetFromJsonAsync<IEnumerable<ProductDto>>(apiPath);
             if (products != null)
@@ -79,4 +77,14 @@
         }
     }
 
+
+    private async Task CheckAccessTokenExpiration()
+    {
+        var accessTokenObject = await LocalStorage.GetItemAsync<AccessToken>("AccessTokenObject");
+
+        if (accessTokenObject.IsExpired())
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
 }

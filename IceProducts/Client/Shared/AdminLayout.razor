@@ -518,11 +518,8 @@
 
     async Task Logout()
     {
-        IEnumerable<string> keys = new string[] { "accessToken", "accessTokenExpiration" };
-        await LocalStorage.RemoveItemsAsync(keys);
-
         var customAuthState = (CustomAuthenticationStateProvider) AuthenticationStateProvider;
-        customAuthState.RemoveAuthenticationState();
+        await customAuthState.RemoveAuthenticationState("AccessTokenObject");
         Navigator.NavigateTo("/login");
     }
 

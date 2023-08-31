@@ -3,6 +3,7 @@
 @using IceProducts.Shared.InputModels;
 @using Microsoft.AspNetCore.Http;
 @using System.Net.Http.Headers;
+@using System.Net;
 <EditForm class="form p-2" Model="TableProduct" OnSubmit="Update" >
     <MudDialog>
 
@@ -17,7 +18,7 @@
                      <MudTextField T="string" HelperText="Name" Variant="Variant.Text"  id="name" @bind-Value="updateProductInput.Name" Required></MudTextField>
                      <MudTextField T="string" HelperText="Sizes" Variant="Variant.Text"  id="sizes" @bind-Value="updateProductInput.Sizes" Required></MudTextField>
                      <MudTextField T="string" HelperText="Small description" Variant="Variant.Text" Immediate="true" id="description" MaxLength="75" Counter="75" @bind-Value="updateProductInput.SmallDescription"  Required></MudTextField>
-                     <MudTextField T="string" HelperText="Detaile description" Variant="Variant.Outlined" Immediate="true" Lines="3" MaxLength="332" Counter="332" id="longdescription"  @bind-Value="updateProductInput.LongDescription"></MudTextField>
+                     <MudTextField T="string" HelperText="Detaile description" Variant="Variant.Outlined" Immediate="true" Lines="3" MaxLength="332" Counter="332" id="longdescription"  @bind-Value="updateProductInput.LongDescription" Required></MudTextField>
                 </div>
             </div>
            
@@ -45,14 +46,13 @@
 @code {
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-
     [Parameter] public ProductDto TableProduct { get; set; } = new ProductDto();
-
     [Parameter] public HashSet<ProductDto> TableProducts { get; set; } = new HashSet<ProductDto>();
 
     [Inject] public HttpClient HttpRequest { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
+    [Inject] public ISnackbar Snackbar { get; set; }
 
-    
     private static readonly HashSet<string> acceptedExtenstions =
     new HashSet<string> {
             "image/apng",
@@ -109,7 +109,18 @@
         }
         else
         {
-            // do something later
+            //token expired
+            if(response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
+
+            // some error occurred
+            else
+            {
+                Snackbar.Add("An error occured please check your inputs or try again later");
+            }
         }
         _disableSubmit = false;
         _isSaving = false;

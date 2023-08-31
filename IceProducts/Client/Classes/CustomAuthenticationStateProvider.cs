@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using IceProducts.Shared.Responses;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Text.Json;
@@ -19,25 +20,28 @@ namespace IceProducts.Client.Classes
              //if it's empty then the user is not authenticated
             ClaimsPrincipal _anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
 
-            string token = await _localStorage.GetItemAsStringAsync("accessToken");
+            var tokenObject = await _localStorage.GetItemAsync<AccessToken>("AccessTokenObject");
 
-            if (token == null || string.IsNullOrEmpty(token))
+
+            if (tokenObject == null || string.IsNullOrEmpty(tokenObject.Token))
             {
                 return new AuthenticationState(_anonymousUser);
             }
 
             //create a claim prinicipal for the valid client
-            ClaimsPrincipal claimingUser = new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwtAuth"));
+            ClaimsPrincipal claimingUser = new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(tokenObject.Token), "jwtAuth"));
             return new AuthenticationState(claimingUser);
         }
 
-        public void NotifyStateChanged()
+        public async Task SetAuthenticationState(AccessToken accessResponse)
         {
+            await _localStorage.SetItemAsync("AccessTokenObject", accessResponse);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
-        public void RemoveAuthenticationState()
+        public async Task RemoveAuthenticationState(string key)
         {
+            await _localStorage.RemoveItemAsync(key);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 

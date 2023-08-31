@@ -97,10 +97,10 @@
     {
         var imageFile = new byte[file.Size];
 
-        //Max ~5MB
-        if (file.Size <= 1024 * 5000)
+        //Max ~10MB
+        if (file.Size <= 1024 * 10000)
         {
-            await file.OpenReadStream(maxAllowedSize: 1024 * 5000).ReadAsync(imageFile);
+            await file.OpenReadStream().ReadAsync(imageFile);
         }
         return imageFile;
     }

@@ -1,6 +1,8 @@
 ﻿@page "/settings"
+@using Blazored.LocalStorage;
 @using IceProducts.Client.Components
 @using IceProducts.Shared.InputModels;
+@using IceProducts.Shared.Responses;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization
 @layout AdminLayout
@@ -191,4 +193,28 @@
 @code {
     public ChangePasswordInputModel ChangePasswordInputModel { get; set; } = new ChangePasswordInputModel();
 
+    [Inject] ILocalStorageService LocalStorage { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+    [CascadingParameter] public Task<AuthenticationState> authenticationState { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckAccessTokenExpiration();
+    }
+
+    private async Task CheckAccessTokenExpiration()
+    {
+        var state = await authenticationState;
+
+        if (state != null)
+        {
+            var accessTokenObject = await LocalStorage.GetItemAsync<AccessToken>("AccessTokenObject");
+
+            if (accessTokenObject.IsExpired())
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+        }
+    }
 }

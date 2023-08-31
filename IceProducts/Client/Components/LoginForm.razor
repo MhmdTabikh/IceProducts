@@ -233,7 +233,7 @@
     public NavigationManager Navigator { get; set; }
 
     [Inject]
-    public AuthenticationStateProvider? AuthenticationState { get; set; }
+    public AuthenticationStateProvider AuthenticationState { get; set; }
 
     [Inject]
     public ILocalStorageService LocalStorage { get; set; }
@@ -255,19 +255,13 @@
 
         if (response.IsSuccessStatusCode)
         {
-            var accessToken = await response.Content.ReadFromJsonAsync<AccessToken>();
+            var accessTokenObject = await response.Content.ReadFromJsonAsync<AccessToken>();
 
-            if(accessToken != null)
+            if (accessTokenObject != null)
             {
-
-                var customAuthProvider = (CustomAuthenticationStateProvider?)AuthenticationState;
-                await LocalStorage.SetItemAsStringAsync("accessToken", accessToken.Token);
-                await LocalStorage.SetItemAsync("accessTokenExpiration", accessToken.Expiration);
-
-                CreateAuthenticationHeader(accessToken.Token);
-
-                //change the state of the application (modify the authentication state)
-                customAuthProvider?.NotifyStateChanged();
+                var customAuthProvider = (CustomAuthenticationStateProvider) AuthenticationState;
+                await customAuthProvider.SetAuthenticationState(accessTokenObject);
+                CreateAuthenticationHeader(accessTokenObject.Token);
                 Navigator.NavigateTo("/admin");
             }
         }
