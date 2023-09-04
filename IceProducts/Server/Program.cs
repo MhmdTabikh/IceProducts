@@ -1,13 +1,11 @@
 using FluentValidation;
 using IceProducts.Server.DataContext;
-using IceProducts.Server.Emailing;
 using IceProducts.Server.Extensions;
 using IceProducts.Server.Services;
 using IceProducts.Server.Services.interfaces;
 using IceProducts.Server.Validators;
 using IceProducts.Server.Validators.ValidationModels;
 using IceProducts.Shared.InputModels;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), optionsBuilder =>
@@ -25,14 +22,15 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(buil
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddIdentityServices(builder.Configuration);
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
-builder.Services.AddSingleton(builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
-builder.Services.AddScoped<IEmailService, EmailService>();
+
 builder.Services.AddScoped<IValidator<ChangePasswordInputModel>, PasswordValidator>();
 builder.Services.AddScoped<IValidator<ProductValidationModel>, ProductValidator>();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

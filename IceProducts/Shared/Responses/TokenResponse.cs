@@ -1,7 +1,4 @@
-﻿
-
-namespace IceProducts.Shared.Responses;
-
+﻿namespace IceProducts.Shared.Responses;
 public class TokenResponse : BaseResponse
 {
     public AccessToken Token { get; set; }

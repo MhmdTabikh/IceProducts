@@ -92,7 +92,6 @@ namespace IceProducts.Server.Services.interfaces
             await _context.SaveChangesAsync();
         }
 
-        //change later not efficient (bshuf shu b3ml fiha b3den)
         public void Update(Product product, UpdateProductInputModel updateProductInput)
         {
             if (updateProductInput.ImageData != null && updateProductInput.ImageData.Image != null && updateProductInput.ImageData.Image.Length > 0)

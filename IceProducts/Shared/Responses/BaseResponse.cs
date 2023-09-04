@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IceProducts.Shared.Responses
+﻿namespace IceProducts.Shared.Responses
 {
-    public class BaseResponse
+	public class BaseResponse
     {
         public bool Success { get; set; }
         public string? Message { get; set; }
