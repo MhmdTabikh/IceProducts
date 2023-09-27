@@ -15,10 +15,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), optionsBuilder =>
+
+//builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), optionsBuilder =>
+//{
+//    optionsBuilder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(35), null);
+//}));
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    optionsBuilder.EnableRetryOnFailure(10, TimeSpan.FromSeconds(35), null);
-}));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), provider => provider.EnableRetryOnFailure(8, TimeSpan.FromSeconds(25), null));
+});
+
+
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddIdentityServices(builder.Configuration);
